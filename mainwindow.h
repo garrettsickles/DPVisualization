@@ -1,11 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QWidget>
 #include <QMainWindow>
+#include "dpmatrix.h"
 
 namespace Ui {
 class MainWindow;
 }
+
+class DPMatrix;
 
 class MainWindow : public QMainWindow
 {
@@ -17,6 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    DPMatrix *dp;
 
     void resetSource();
     void resetTarget();

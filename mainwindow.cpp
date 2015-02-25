@@ -1,9 +1,13 @@
+#include "dpmatrix.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    dp = new DPMatrix();
+    ui->matrixDisplay->setWidget(dp);
     this->resetAlgorithm();
     connect(ui->runButton, SIGNAL(clicked()), this, SLOT(runAlgorithm()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(resetAlgorithm()));
