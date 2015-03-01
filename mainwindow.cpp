@@ -37,13 +37,11 @@ void MainWindow::resetAlgorithm()
 void MainWindow::resetSource()
 {
     ui->sourceInput->setEnabled(true);
-    ui->sourceOutput->setText("Source");
 }
 
 void MainWindow::resetTarget()
 {
     ui->targetInput->setEnabled(true);
-    ui->targetOutput->setText("Target");
 }
 
 void MainWindow::toggleRun(bool var)
@@ -59,13 +57,11 @@ void MainWindow::toggleReset(bool var)
 
 void MainWindow::updateSource()
 {
-    ui->sourceOutput->setText(ui->sourceInput->text());
     ui->sourceInput->setDisabled(true);
 }
 
 void MainWindow::updateTarget()
 {
-    ui->targetOutput->setText(ui->targetInput->text());
     ui->targetInput->setDisabled(true);
 }
 

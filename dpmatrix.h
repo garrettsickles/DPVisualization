@@ -9,9 +9,15 @@
 #include <QPoint>
 #include <QFont>
 #include <QSize>
+#include <QTime>
+#include <QCoreApplication>
 #include "mainwindow.h"
 
 #define INIT_STRING "Elephants"
+
+const int DELETE_COST = 1;
+const int INSERT_COST = 1;
+const int REPLACE_COST = 1;
 
 QT_BEGIN_NAMESPACE
 class QMouseEvent;
@@ -27,7 +33,6 @@ public:
     ~DPMatrix();
 
     void setup(QString, QString);
-    void initializeBaseCase();
 
 signals:
 
@@ -49,6 +54,10 @@ private:
 
     void setSource(QString);
     void setTarget(QString);
+
+    int getCost(int,int);
+    int min(int, int);
+    void delay(int);
 };
 
 #endif // DPMATRIX_H

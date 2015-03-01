@@ -16,7 +16,11 @@ void DPMatrix::mouseMoveEvent(QMouseEvent *event)
 
 void DPMatrix::mousePressEvent(QMouseEvent *event)
 {
+    QPoint position = mapFromGlobal(event->globalPos());
+    int row = (position.y() / squareSize) - 1;
+    int column = (position.x() / squareSize) - 1;
 
+    this->getCost(row, column);
 }
 
 void DPMatrix::paintEvent(QPaintEvent *event)
@@ -93,6 +97,32 @@ void DPMatrix::setSource(QString source) {
 void DPMatrix::setTarget(QString target) {
     this->target = target;
     this->columns = target.length() + 2;
+}
+
+int DPMatrix::getCost(int row, int column) {
+    if(this->matrix[row][column] >= 0) return this->matrix[row][column];
+    else {
+        int del = getCost(row-1, column) + DELETE_COST;
+        int ins = getCost(row, column-1) + INSERT_COST;
+        int sub = getCost(row - 1, column - 1) + (source.at(row-1) != target.at(column-1))*REPLACE_COST;
+        this->matrix[row][column] = min(sub, min(del, ins));
+        this->delay(500);
+        this->repaint();
+        return(this->matrix[row][column]);
+    }
+}
+
+int DPMatrix::min(int a, int b) {
+    return b < a ? b : a;
+}
+
+void DPMatrix::delay( int millisecondsToWait )
+{
+    QTime dieTime = QTime::currentTime().addMSecs( millisecondsToWait );
+    while( QTime::currentTime() < dieTime )
+    {
+        QCoreApplication::processEvents( QEventLoop::AllEvents, 100 );
+    }
 }
 
 DPMatrix::~DPMatrix()
