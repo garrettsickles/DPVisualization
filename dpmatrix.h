@@ -5,6 +5,7 @@
 #include <QString>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QColor>
 #include <QPoint>
 #include <QFont>
 #include <QSize>
@@ -25,8 +26,7 @@ public:
     DPMatrix(QWidget *parent = 0);
     ~DPMatrix();
 
-    void setSource(QString);
-    void setTarget(QString);
+    void setup(QString, QString);
     void initializeBaseCase();
 
 signals:
@@ -40,10 +40,15 @@ protected:
 
 private:
     int squareSize;
+    int maxLength;
     int rows;
     int columns;
+    int **matrix;
     QString source;
     QString target;
+
+    void setSource(QString);
+    void setTarget(QString);
 };
 
 #endif // DPMATRIX_H

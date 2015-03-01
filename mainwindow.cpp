@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     dp = new DPMatrix();
     ui->matrixDisplay->setWidget(dp);
+    ui->targetInput->setText(INIT_STRING);
+    ui->sourceInput->setText(INIT_STRING);
     this->resetAlgorithm();
     connect(ui->runButton, SIGNAL(clicked()), this, SLOT(runAlgorithm()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(resetAlgorithm()));
@@ -20,6 +22,7 @@ void MainWindow::runAlgorithm()
     ui->resetButton->setEnabled(true);
     updateSource();
     updateTarget();
+    this->dp->setup(ui->sourceInput->text(), ui->targetInput->text());
 }
 
 void MainWindow::resetAlgorithm()
@@ -28,18 +31,17 @@ void MainWindow::resetAlgorithm()
     toggleReset(false);
     resetSource();
     resetTarget();
+    this->dp->setup(ui->sourceInput->text(), ui->targetInput->text());
 }
 
 void MainWindow::resetSource()
 {
-    ui->sourceInput->setText("");
     ui->sourceInput->setEnabled(true);
     ui->sourceOutput->setText("Source");
 }
 
 void MainWindow::resetTarget()
 {
-    ui->targetInput->setText("");
     ui->targetInput->setEnabled(true);
     ui->targetOutput->setText("Target");
 }
