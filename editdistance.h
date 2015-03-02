@@ -1,5 +1,5 @@
-#ifndef DPMATRIX_H
-#define DPMATRIX_H
+#ifndef EDITDISTANCE_H
+#define EDITDISTANCE_H
 
 #include <QWidget>
 #include <QString>
@@ -27,13 +27,13 @@ class QMouseEvent;
 class QPaintEvent;
 QT_END_NAMESPACE
 
-class DPMatrix : public QWidget
+class EditDistance : public QWidget
 {
     Q_OBJECT
 
 public:
-    DPMatrix(QWidget *parent = 0);
-    ~DPMatrix();
+    EditDistance(QWidget *parent = 0);
+    ~EditDistance();
 
     void setup(QString, QString);
 
@@ -42,8 +42,7 @@ signals:
 public slots:
 
 protected:
-    void mouseMoveEvent(QMouseEvent*) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent*) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
 
 private:
@@ -58,8 +57,6 @@ private:
     QString source;
     QString target;
 
-    std::vector<std::vector<std::vector<std::pair<int,int> > > > traceback;
-
     void setSource(QString);
     void setTarget(QString);
 
@@ -69,4 +66,4 @@ private:
     void drawTraceback(int, int, QPainter *qp);
 };
 
-#endif // DPMATRIX_H
+#endif // EditDistance_H

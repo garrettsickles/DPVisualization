@@ -1,4 +1,4 @@
-#include "dpmatrix.h"
+#include "editdistance.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    dp = new DPMatrix();
+    dp = new EditDistance();
     ui->matrixDisplay->setWidget(dp);
     ui->targetInput->setText(INIT_STRING);
     ui->sourceInput->setText(INIT_STRING);
@@ -20,7 +20,6 @@ void MainWindow::runAlgorithm()
     toggleRun(false);
     toggleReset(true);
     dp->setEnabled(true);
-    ui->resetButton->setEnabled(true);
     updateSource();
     updateTarget();
     this->dp->setup(ui->sourceInput->text(), ui->targetInput->text());
@@ -59,11 +58,13 @@ void MainWindow::toggleReset(bool var)
 
 void MainWindow::updateSource()
 {
+    this->source = ui->sourceInput->text();
     ui->sourceInput->setDisabled(true);
 }
 
 void MainWindow::updateTarget()
 {
+    this->target = ui->targetInput->text();
     ui->targetInput->setDisabled(true);
 }
 

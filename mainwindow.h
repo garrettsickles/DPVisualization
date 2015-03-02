@@ -3,13 +3,13 @@
 
 #include <QWidget>
 #include <QMainWindow>
-#include "dpmatrix.h"
+#include "editdistance.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class DPMatrix;
+class EditDistance;
 
 class MainWindow : public QMainWindow
 {
@@ -21,7 +21,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    DPMatrix *dp;
+    EditDistance *dp;
+    QString source;
+    QString target;
 
     void resetSource();
     void resetTarget();
