@@ -4,6 +4,7 @@
 DPMatrix::DPMatrix(QWidget *parent) : QWidget(parent)
 {
     squareSize = 30;
+    doTraceback = false;
     this->setup(INIT_STRING, INIT_STRING);
     setGeometry(0, 0, squareSize * columns, squareSize * rows);
     setMouseTracking(true);
@@ -11,7 +12,27 @@ DPMatrix::DPMatrix(QWidget *parent) : QWidget(parent)
 
 void DPMatrix::mouseMoveEvent(QMouseEvent *event)
 {
+    QPoint position = mapFromGlobal(event->globalPos());
+    int row = (position.y() / squareSize) - 1;
+    int column = (position.x() / squareSize) - 1;
 
+    if(row >= 0 && column >= 0 && row < this->rows - 1 && column < this->columns - 1) {
+        int cost = this->matrix[row][column];
+
+        if(cost >= 0) {
+            QString text = QString::fromLatin1("<p>Cost: <span style=\"font-size: 24pt; font-family: %1\">").arg(QFont("Calibri", 16).family())
+                    + QString::number(cost);
+            QToolTip::showText(event->globalPos(), text, this);
+            this->doTraceback = true;
+            tbr = row;
+            tbc = column;
+            this->repaint();
+        }
+    }
+    else {
+        QToolTip::hideText();
+        this->doTraceback = false;
+    }
 }
 
 void DPMatrix::mousePressEvent(QMouseEvent *event)
@@ -20,7 +41,7 @@ void DPMatrix::mousePressEvent(QMouseEvent *event)
     int row = (position.y() / squareSize) - 1;
     int column = (position.x() / squareSize) - 1;
 
-    this->getCost(row, column);
+    if(row >= 0 && column >= 0 && row < this->rows - 1 && column < this->columns - 1) this->getCost(row, column);
 }
 
 void DPMatrix::paintEvent(QPaintEvent *event)
@@ -61,6 +82,10 @@ void DPMatrix::paintEvent(QPaintEvent *event)
                 painter.setClipRect(column*squareSize, row*squareSize, squareSize, squareSize);
                 degree.setHsv((120.0 * (1 - ((float)(this->matrix[row - 1][column - 1])) / (float)(this->maxLength))), 255, 255, 255);
                 painter.fillRect(column*squareSize + 1, row*squareSize + 1, squareSize - 1, squareSize - 1, degree);
+                if(doTraceback) {
+                    painter.setPen(QPen(Qt::blue, 3.0));
+                    this->drawTraceback(tbr, tbc, &painter);
+                }
                 painter.drawText(column*squareSize + (squareSize / 2) - fontMetrics.width(QString::number(this->matrix[row - 1][column - 1]))/2,
                         row*squareSize + 4 + fontMetrics.ascent(),
                         QString::number(this->matrix[row - 1][column - 1]));
@@ -89,6 +114,38 @@ void DPMatrix::setup(QString source, QString target) {
     this->repaint();
 }
 
+void DPMatrix::drawTraceback(int row, int column, QPainter *qp) {
+    if(row == 0 && column == 0);
+    else {
+        if(row == 0) this->drawTraceback(0, column-1, qp);
+        else if(column == 0) this->drawTraceback(row-1, 0, qp);
+        else {
+            int low = min(this->matrix[row-1][column-1],min(this->matrix[row][column-1],this->matrix[row-1][column]));
+            if(this->matrix[row-1][column-1] == low) this->drawTraceback(row-1, column-1,qp);
+            if(this->matrix[row][column-1] == low) this->drawTraceback(row, column-1,qp);
+            if(this->matrix[row-1][column] == low) this->drawTraceback(row-1, column,qp);
+        }
+    }
+    qp->drawRect((column+1)*squareSize, (row+1)*squareSize, squareSize, squareSize);
+}
+
+int DPMatrix::getCost(int row, int column) {
+    if(this->matrix[row][column] >= 0) return this->matrix[row][column];
+    else {
+        int del = getCost(row-1, column) + DELETE_COST;
+        int ins = getCost(row, column-1) + INSERT_COST;
+        int sub = getCost(row - 1, column - 1) + (source.at(row-1) != target.at(column-1))*REPLACE_COST;
+        if(!this->isEnabled()) return -1; // Prevent recursion if the reset button has been hit
+        else {
+            this->matrix[row][column] = min(sub, min(del, ins));
+            //this->delay(250);
+            this->repaint();
+            return(this->matrix[row][column]);
+        }
+    }
+}
+
+
 void DPMatrix::setSource(QString source) {
     this->source = source;
     this->rows = source.length() + 2;
@@ -99,18 +156,7 @@ void DPMatrix::setTarget(QString target) {
     this->columns = target.length() + 2;
 }
 
-int DPMatrix::getCost(int row, int column) {
-    if(this->matrix[row][column] >= 0) return this->matrix[row][column];
-    else {
-        int del = getCost(row-1, column) + DELETE_COST;
-        int ins = getCost(row, column-1) + INSERT_COST;
-        int sub = getCost(row - 1, column - 1) + (source.at(row-1) != target.at(column-1))*REPLACE_COST;
-        this->matrix[row][column] = min(sub, min(del, ins));
-        this->delay(500);
-        this->repaint();
-        return(this->matrix[row][column]);
-    }
-}
+
 
 int DPMatrix::min(int a, int b) {
     return b < a ? b : a;

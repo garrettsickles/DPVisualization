@@ -19,6 +19,7 @@ void MainWindow::runAlgorithm()
 {
     toggleRun(false);
     toggleReset(true);
+    dp->setEnabled(true);
     ui->resetButton->setEnabled(true);
     updateSource();
     updateTarget();
@@ -29,6 +30,7 @@ void MainWindow::resetAlgorithm()
 {
     toggleRun(true);
     toggleReset(false);
+    dp->setDisabled(true);
     resetSource();
     resetTarget();
     this->dp->setup(ui->sourceInput->text(), ui->targetInput->text());

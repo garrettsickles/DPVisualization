@@ -10,7 +10,10 @@
 #include <QFont>
 #include <QSize>
 #include <QTime>
+#include <QToolTip>
 #include <QCoreApplication>
+#include <vector>
+#include <iostream>
 #include "mainwindow.h"
 
 #define INIT_STRING "Elephants"
@@ -49,8 +52,13 @@ private:
     int rows;
     int columns;
     int **matrix;
+    bool doTraceback;
+    int tbr;
+    int tbc;
     QString source;
     QString target;
+
+    std::vector<std::vector<std::vector<std::pair<int,int> > > > traceback;
 
     void setSource(QString);
     void setTarget(QString);
@@ -58,6 +66,7 @@ private:
     int getCost(int,int);
     int min(int, int);
     void delay(int);
+    void drawTraceback(int, int, QPainter *qp);
 };
 
 #endif // DPMATRIX_H
