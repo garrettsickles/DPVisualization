@@ -33,6 +33,7 @@ class EditDistance : public QWidget
 
 public:
     EditDistance(QWidget *parent = 0);
+    EditDistance(QString, QString, QWidget *parent = 0);
     ~EditDistance();
 
     void setup(QString, QString);

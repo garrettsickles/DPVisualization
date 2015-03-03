@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -72,16 +72,9 @@
         </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="runButton">
+        <widget class="QPushButton" name="updateButton">
          <property name="text">
-          <string>Run</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="resetButton">
-         <property name="text">
-          <string>Reset</string>
+          <string>Update</string>
          </property>
         </widget>
        </item>

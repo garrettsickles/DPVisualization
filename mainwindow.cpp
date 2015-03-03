@@ -5,70 +5,31 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    this->initialize();
+    this->update();
+}
+
+void MainWindow::initialize()
+{
+    this->dp = NULL;
     ui->setupUi(this);
-    dp = new EditDistance();
-    ui->matrixDisplay->setWidget(dp);
     ui->targetInput->setText(INIT_STRING);
     ui->sourceInput->setText(INIT_STRING);
-    this->resetAlgorithm();
-    connect(ui->runButton, SIGNAL(clicked()), this, SLOT(runAlgorithm()));
-    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(resetAlgorithm()));
+    connect(ui->updateButton, SIGNAL(clicked()), this, SLOT(update()));
 }
 
-void MainWindow::runAlgorithm()
-{
-    toggleRun(false);
-    toggleReset(true);
-    dp->setEnabled(true);
-    updateSource();
-    updateTarget();
-    this->dp->setup(ui->sourceInput->text(), ui->targetInput->text());
-}
-
-void MainWindow::resetAlgorithm()
-{
-    toggleRun(true);
-    toggleReset(false);
-    dp->setDisabled(true);
-    resetSource();
-    resetTarget();
-    this->dp->setup(ui->sourceInput->text(), ui->targetInput->text());
-}
-
-void MainWindow::resetSource()
-{
-    ui->sourceInput->setEnabled(true);
-}
-
-void MainWindow::resetTarget()
-{
-    ui->targetInput->setEnabled(true);
-}
-
-void MainWindow::toggleRun(bool var)
-{
-    ui->runButton->setEnabled(var);
-    ui->runButton->setText(var ? "Run" : "Running");
-}
-
-void MainWindow::toggleReset(bool var)
-{
-    ui->resetButton->setEnabled(var);
-}
-
-void MainWindow::updateSource()
+void MainWindow::update()
 {
     this->source = ui->sourceInput->text();
-    ui->sourceInput->setDisabled(true);
-}
-
-void MainWindow::updateTarget()
-{
     this->target = ui->targetInput->text();
-    ui->targetInput->setDisabled(true);
+    if(dp != NULL) delete dp;
+    dp = new EditDistance(this->source, this->target, this);
+    ui->matrixDisplay->setWidget(dp);
+    dp->setEnabled(true);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete dp;
 }

@@ -25,16 +25,10 @@ private:
     QString source;
     QString target;
 
-    void resetSource();
-    void resetTarget();
-    void toggleRun(bool);
-    void toggleReset(bool);
-    void updateSource();
-    void updateTarget();
+    void initialize();
 
 private slots:
-    void runAlgorithm();
-    void resetAlgorithm();
+    void update();
 };
 
 #endif // MAINWINDOW_H

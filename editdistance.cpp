@@ -5,7 +5,18 @@ EditDistance::EditDistance(QWidget *parent) : QWidget(parent)
 {
     squareSize = 30;
     doTraceback = false;
+    this->matrix = NULL;
     this->setup(INIT_STRING, INIT_STRING);
+    setGeometry(0, 0, squareSize * columns, squareSize * rows);
+    setMouseTracking(true);
+}
+
+EditDistance::EditDistance(QString s, QString t, QWidget *parent) : QWidget(parent)
+{
+    squareSize = 30;
+    doTraceback = false;
+    this->matrix = NULL;
+    this->setup(s, t);
     setGeometry(0, 0, squareSize * columns, squareSize * rows);
     setMouseTracking(true);
 }
@@ -96,6 +107,11 @@ void EditDistance::setup(QString source, QString target) {
     if(source.length() > target.length()) this->maxLength = source.length();
     else this->maxLength = target.length();
 
+    if(this->matrix != NULL) {
+        for(int i = 0; i < this->rows - 1; i++)
+            delete [] this->matrix[i];
+        delete [] this->matrix;
+    }
     this->matrix = new int*[this->source.length() + 1];
     for(int i = 0; i < this->source.length() + 1; i++) this->matrix[i] = new int[this->target.length() + 1];
 
