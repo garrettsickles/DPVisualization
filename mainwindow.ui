@@ -28,33 +28,6 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="sourceLabel">
-           <property name="text">
-            <string>Source</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="targetLabel">
-           <property name="text">
-            <string>Target</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="algorithmLabel">
-           <property name="text">
-            <string>Algorithm</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="sourceInput"/>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="targetInput"/>
-         </item>
          <item row="1" column="2">
           <widget class="QComboBox" name="algorithmType">
            <item>
@@ -67,6 +40,40 @@
              <string>Longest Common Subsequence</string>
             </property>
            </item>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="targetInput"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="sourceInput"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="algorithmLabel">
+           <property name="text">
+            <string>Algorithm</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="targetLabel">
+           <property name="text">
+            <string>Target</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="sourceLabel">
+           <property name="text">
+            <string>Source</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QToolButton" name="optionButton">
+           <property name="text">
+            <string>...</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -83,10 +90,13 @@
      <item>
       <widget class="QScrollArea" name="matrixDisplay">
        <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
+        <enum>Qt::ScrollBarAlwaysOn</enum>
        </property>
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
+        <enum>Qt::ScrollBarAlwaysOn</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
        </property>
        <property name="widgetResizable">
         <bool>true</bool>
@@ -96,8 +106,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>617</width>
-          <height>448</height>
+          <width>600</width>
+          <height>431</height>
          </rect>
         </property>
        </widget>

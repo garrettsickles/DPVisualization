@@ -1,15 +1,18 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QInputDialog>
 #include <QWidget>
 #include <QMainWindow>
 #include "editdistance.h"
 
-namespace Ui {
+#define INIT_SOURCE "Elephant"
+#define INIT_TARGET "Anaconda"
+
+namespace Ui
+{
 class MainWindow;
 }
-
-class EditDistance;
 
 class MainWindow : public QMainWindow
 {
@@ -21,7 +24,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    EditDistance *dp;
+
     QString source;
     QString target;
 
@@ -29,6 +32,7 @@ private:
 
 private slots:
     void update();
+    void optionDialog();
 };
 
 #endif // MAINWINDOW_H

@@ -11,25 +11,30 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::initialize()
 {
-    this->dp = NULL;
     ui->setupUi(this);
-    ui->targetInput->setText(INIT_STRING);
-    ui->sourceInput->setText(INIT_STRING);
+    ui->targetInput->setText(INIT_SOURCE);
+    ui->sourceInput->setText(INIT_TARGET);
     connect(ui->updateButton, SIGNAL(clicked()), this, SLOT(update()));
+    connect(ui->optionButton, SIGNAL(clicked()), this, SLOT(optionDialog()));
 }
 
 void MainWindow::update()
 {
     this->source = ui->sourceInput->text();
     this->target = ui->targetInput->text();
-    if(dp != NULL) delete dp;
-    dp = new EditDistance(this->source, this->target, this);
-    ui->matrixDisplay->setWidget(dp);
-    dp->setEnabled(true);
+    if(ui->matrixContents != NULL) delete ui->matrixContents;
+    ui->matrixContents = new EditDistance(this->source, this->target, this);
+    ui->matrixDisplay->setWidget(ui->matrixContents);
+    ui->matrixDisplay->setWidgetResizable(true);
+    ui->matrixContents->setEnabled(true);
+}
+
+void MainWindow::optionDialog() {
+    bool ok;
+    QInputDialog::getText(this, tr("Name"), tr("User Name:"), QLineEdit::Normal, "", &ok);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete dp;
 }

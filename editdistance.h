@@ -12,15 +12,15 @@
 #include <QTime>
 #include <QToolTip>
 #include <QCoreApplication>
-#include <vector>
 #include <iostream>
 #include "mainwindow.h"
-
-#define INIT_STRING "Elephants"
 
 const int DELETE_COST = 1;
 const int INSERT_COST = 1;
 const int REPLACE_COST = 1;
+
+const int INIT_SQUARESIZE = 30;
+const int MAX_LENGTH = 50;
 
 QT_BEGIN_NAMESPACE
 class QMouseEvent;
@@ -36,35 +36,29 @@ public:
     EditDistance(QString, QString, QWidget *parent = 0);
     ~EditDistance();
 
-    void setup(QString, QString);
-
-signals:
-
-public slots:
-
-protected:
-    void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
-    void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
-
 private:
     int squareSize;
     int maxLength;
     int rows;
     int columns;
-    int **matrix;
-    bool doTraceback;
-    int tbr;
-    int tbc;
+    int matrix[MAX_LENGTH][MAX_LENGTH];
+    bool traceback[MAX_LENGTH][MAX_LENGTH];
     QString source;
     QString target;
 
+    void initialize(QString, QString);
     void setSource(QString);
     void setTarget(QString);
 
     int getCost(int,int);
+    void calcTraceback(int,int);
+
     int min(int, int);
     void delay(int);
-    void drawTraceback(int, int, QPainter *qp);
+
+protected:
+    void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
 };
 
 #endif // EditDistance_H
