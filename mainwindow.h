@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QMainWindow>
 #include "editdistance.h"
+#include "commonsubsequence.h"
 
 #define INIT_SOURCE "Elephant"
 #define INIT_TARGET "Anaconda"

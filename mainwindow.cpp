@@ -23,7 +23,10 @@ void MainWindow::update()
     this->source = ui->sourceInput->text();
     this->target = ui->targetInput->text();
     if(ui->matrixContents != NULL) delete ui->matrixContents;
-    ui->matrixContents = new EditDistance(this->source, this->target, this);
+    if(ui->algorithmType->currentIndex() == 0)
+        ui->matrixContents = new EditDistance(this->source, this->target, this);
+    else if(ui->algorithmType->currentIndex() ==1)
+        ui->matrixContents = new CommonSubsequence(this->source, this->target, this);
     ui->matrixDisplay->setWidget(ui->matrixContents);
     ui->matrixDisplay->setWidgetResizable(true);
     ui->matrixContents->setEnabled(true);
