@@ -14,6 +14,7 @@ void MainWindow::initialize()
     ui->setupUi(this);
     ui->targetInput->setText(INIT_SOURCE);
     ui->sourceInput->setText(INIT_TARGET);
+    ui->optionButton->setDisabled(true);
     connect(ui->updateButton, SIGNAL(clicked()), this, SLOT(update()));
     connect(ui->optionButton, SIGNAL(clicked()), this, SLOT(optionDialog()));
 }
