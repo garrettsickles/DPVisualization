@@ -42,7 +42,8 @@ int CommonSubsequence::calculate(int row, int column)
     return(this->at(row, column));
 }
 
-QString CommonSubsequence::getToolTipText(int row, int column, int value) {
+QString CommonSubsequence::getToolTipText(int row, int column, int value)
+{
     QString text = QString::fromLatin1("<p><span style=\"font-size: 16pt; font-family: %1\">").arg(QFont("Courier New", 16).family());
     text += "<table>";
     text += "<tr><td>Length: </td><td>" + QString::number(value) + "</td></tr>";
