@@ -33,7 +33,6 @@ private:
 
 private slots:
     void update();
-    void optionDialog();
 };
 
 #endif // MAINWINDOW_H

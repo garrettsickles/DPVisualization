@@ -14,9 +14,9 @@ void MainWindow::initialize()
     ui->setupUi(this);
     ui->targetInput->setText(INIT_SOURCE);
     ui->sourceInput->setText(INIT_TARGET);
-    ui->optionButton->setDisabled(true);
+    // ui->optionButton->setDisabled(true);
     connect(ui->updateButton, SIGNAL(clicked()), this, SLOT(update()));
-    connect(ui->optionButton, SIGNAL(clicked()), this, SLOT(optionDialog()));
+    connect(ui->optionButton, SIGNAL(clicked()), this, SLOT(displayOptionDialog()));
 }
 
 void MainWindow::update()
@@ -31,11 +31,6 @@ void MainWindow::update()
     ui->matrixDisplay->setWidget(ui->matrixContents);
     ui->matrixDisplay->setWidgetResizable(true);
     ui->matrixContents->setEnabled(true);
-}
-
-void MainWindow::optionDialog() {
-    bool ok;
-    QInputDialog::getText(this, tr("Name"), tr("User Name:"), QLineEdit::Normal, "", &ok);
 }
 
 MainWindow::~MainWindow()

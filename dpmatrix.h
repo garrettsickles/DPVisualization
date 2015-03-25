@@ -56,7 +56,10 @@ protected:
     int max(int, int);
 
 private:
+    // User Customizable Options
     int squareSize;
+
+    // Noncustomizable Options
     int rows;
     int columns;
 
