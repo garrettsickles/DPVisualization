@@ -20,8 +20,14 @@ public:
     void setup();
     void traceback(int row, int column);
     int calculate(int row, int column);
-private:
 
+    QString getToolTipText(int, int, int);
+private:
+    QString con;
+    QString rs;
+    QString cs;
+
+    void reset();
 };
 
 #endif // EditDistance_H

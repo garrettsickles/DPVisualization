@@ -25,7 +25,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
     QString source;
     QString target;
 
@@ -33,6 +32,8 @@ private:
 
 private slots:
     void update();
+    void transpose();
+    void options();
 };
 
 #endif // MAINWINDOW_H

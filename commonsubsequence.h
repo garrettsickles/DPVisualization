@@ -19,7 +19,11 @@ public:
 
     QString getToolTipText(int, int, int);
 private:
-    QString ss;
+    QString rs;
+    QString cs;
+    QString lcs;
+
+    void reset();
 };
 
 #endif // COMMONSUBSEQUENCE_H

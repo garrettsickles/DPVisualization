@@ -16,11 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     editdistance.cpp \
     dpmatrix.cpp \
-    commonsubsequence.cpp
+    commonsubsequence.cpp \
+    optiondialog.cpp
 
 HEADERS  += mainwindow.h \
     editdistance.h \
     dpmatrix.h \
-    commonsubsequence.h
+    commonsubsequence.h \
+    optiondialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    optiondialog.ui

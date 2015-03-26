@@ -6,117 +6,152 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>681</width>
-    <height>522</height>
+    <width>700</width>
+    <height>530</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>0</y>
-      <width>621</width>
-      <height>501</height>
+      <x>10</x>
+      <y>10</y>
+      <width>681</width>
+      <height>61</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="2">
-          <widget class="QComboBox" name="algorithmType">
-           <item>
-            <property name="text">
-             <string>Edit Distance</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Longest Common Subsequence</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="targetInput"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="sourceInput"/>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="algorithmLabel">
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QFrame" name="verticalFrame">
+     <property name="geometry">
+      <rect>
+       <x>-160</x>
+       <y>40</y>
+       <width>651</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout"/>
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>651</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="1">
+         <widget class="QLabel" name="targetLabel">
+          <property name="text">
+           <string>Target</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="targetInput"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLineEdit" name="sourceInput"/>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="algorithmLabel">
+          <property name="text">
+           <string>Algorithm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QToolButton" name="optionButton">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="sourceLabel">
+          <property name="text">
+           <string>Source</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QComboBox" name="algorithmType">
+          <item>
            <property name="text">
-            <string>Algorithm</string>
+            <string>Edit Distance</string>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="targetLabel">
+          </item>
+          <item>
            <property name="text">
-            <string>Target</string>
+            <string>Longest Common Subsequence</string>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="sourceLabel">
-           <property name="text">
-            <string>Source</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QToolButton" name="optionButton">
-           <property name="text">
-            <string>...</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QPushButton" name="updateButton">
-         <property name="text">
-          <string>Update</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QScrollArea" name="matrixDisplay">
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOn</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOn</enum>
-       </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustToContents</enum>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="matrixContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>600</width>
-          <height>431</height>
-         </rect>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="transposeButton">
+        <property name="text">
+         <string>Transpose</string>
         </property>
        </widget>
-      </widget>
-     </item>
-    </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="updateButton">
+        <property name="text">
+         <string>Update</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QScrollArea" name="matrixDisplay">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>681</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="matrixContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>679</width>
+       <height>439</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </widget>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

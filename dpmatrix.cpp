@@ -73,18 +73,6 @@ QString DPMatrix::getTarget()
     return this->target;
 }
 
-QString DPMatrix::getToolTipText(int row, int column, int value)
-{
-    QString text = QString::fromLatin1("<p><span style=\"font-size: 16pt; font-family: %1\">").arg(QFont("Courier New", 16).family());
-    text += "<table>";
-    text += "<tr><td>Cost: </td><td>" + QString::number(value) + "</td></tr>";
-    text += "<tr><td>From: </td><td><strong>" + this->source.left(row) + "</strong></td></tr>";
-    text += "<tr><td>To: </td><td><strong>" + this->target.left(column) + "</strong></td></tr>";
-    text += "</table>";
-    text += "</span></p>";
-    return text;
-}
-
 void DPMatrix::mouseReleaseEvent(QMouseEvent *event)
 {
     QPoint position = mapFromGlobal(event->globalPos());
@@ -149,6 +137,10 @@ void DPMatrix::paintEvent(QPaintEvent *event)
                 painter.drawRect((column+1)*squareSize, (row+1)*squareSize, squareSize, squareSize);
 }
 
+QSize DPMatrix::sizeHint() const
+{
+    return QSize(1000, 1000);
+}
 int DPMatrix::min(int a, int b)
 {
     return(b < a ? b : a);
