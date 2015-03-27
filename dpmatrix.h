@@ -35,11 +35,29 @@ public:
     virtual int calculate(int row, int column) = 0;
 
     virtual QString getToolTipText(int, int, int) = 0;
+    void resizeSquare(int s);
 
     int at(int row, int column);
     void set(int row, int column, int value);
     void set(int row, int column, bool value);
 
+    void setCaseSensitive(bool);
+    void setManualTraceback(bool);
+    bool getCaeSensitive();
+    bool getManualTraceback();
+    int maxLength();
+    int getRows();
+    int getColumns();
+
+    QString getSource();
+    QString getTarget();
+
+
+    bool valid(int row, int column);
+    int min(int, int);
+    int max(int, int);
+
+    bool same(QChar, QChar);
 signals:
 
 public slots:
@@ -48,18 +66,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
 
-    int maxLength();
-    int getRows();
-    int getColumns();
 
-    QString getSource();
-    QString getTarget();
 
-    bool valid(int row, int column);
-    int min(int, int);
-    int max(int, int);
-
-    QSize sizeHint() const;
 private:
     // User Customizable Options
     int squareSize;
@@ -67,10 +75,13 @@ private:
     // Noncustomizable Options
     int rows;
     int columns;
+    bool caseSensitive;
+    bool manualTraceback;
 
     int matrix[DEFAULT_MAX_LENGTH][DEFAULT_MAX_LENGTH];
     bool highlight[DEFAULT_MAX_LENGTH][DEFAULT_MAX_LENGTH];
     QString source, target;
+    QFont font;
 
     void initialize(QString source, QString target);
     void delay(int millisecondsToWait);

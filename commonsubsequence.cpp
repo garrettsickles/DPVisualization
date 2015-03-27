@@ -27,7 +27,7 @@ void CommonSubsequence::traceback(int row, int column)
     else if(row == 0) this->traceback(0, column-1);
     else if(column == 0) this->traceback(row-1, 0);
     else {
-        if(this->getSource().at(row-1).toLower() == this->getTarget().at(column-1).toLower())
+        if(this->same(this->getSource().at(row-1), this->getTarget().at(column-1)))
         {
             this->rs[row-1] = (this->getSource().at(row-1));
             this->cs[column-1] = (this->getTarget().at(column-1));
@@ -50,7 +50,7 @@ void CommonSubsequence::traceback(int row, int column)
 int CommonSubsequence::calculate(int row, int column)
 {
     if(this->at(row, column) >= 0);
-    else if(this->getSource().at(row-1).toLower() == this->getTarget().at(column-1).toLower())
+    else if(this->same(this->getSource().at(row-1), this->getTarget().at(column-1)))
         this->set(row, column, this->calculate(row-1, column-1) + 1);
     else
         this->set(row, column, this->max(this->calculate(row-1, column), this->calculate(row, column-1)));

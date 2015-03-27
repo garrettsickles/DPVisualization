@@ -25,6 +25,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    DPMatrix *dp;
     QString source;
     QString target;
 
@@ -33,7 +34,8 @@ private:
 private slots:
     void update();
     void transpose();
-    void options();
+    void reset();
+    void zoom();
 };
 
 #endif // MAINWINDOW_H

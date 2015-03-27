@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>530</height>
+    <width>648</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,116 +20,20 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>681</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string/>
-    </property>
-    <widget class="QFrame" name="verticalFrame">
-     <property name="geometry">
-      <rect>
-       <x>-160</x>
-       <y>40</y>
-       <width>651</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout"/>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>651</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="1">
-         <widget class="QLabel" name="targetLabel">
-          <property name="text">
-           <string>Target</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="targetInput"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLineEdit" name="sourceInput"/>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLabel" name="algorithmLabel">
-          <property name="text">
-           <string>Algorithm</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="QToolButton" name="optionButton">
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="sourceLabel">
-          <property name="text">
-           <string>Source</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QComboBox" name="algorithmType">
-          <item>
-           <property name="text">
-            <string>Edit Distance</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Longest Common Subsequence</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="transposeButton">
-        <property name="text">
-         <string>Transpose</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="updateButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
    <widget class="QScrollArea" name="matrixDisplay">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>80</y>
-      <width>681</width>
-      <height>441</height>
+      <y>100</y>
+      <width>601</width>
+      <height>481</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="widgetResizable">
      <bool>true</bool>
@@ -139,8 +43,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>679</width>
-       <height>439</height>
+       <width>599</width>
+       <height>479</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -150,6 +54,143 @@
       </sizepolicy>
      </property>
     </widget>
+   </widget>
+   <widget class="QSlider" name="zoomSlider">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>100</y>
+      <width>20</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <property name="tickInterval">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="sourceBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>291</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Source</string>
+    </property>
+    <widget class="QLineEdit" name="sourceInput">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>271</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="targetBox">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>10</y>
+      <width>301</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Target</string>
+    </property>
+    <widget class="QLineEdit" name="targetInput">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>281</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QComboBox" name="algorithmType">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>161</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Edit Distance</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Longest Common Subsequence</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="transposeButton">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>70</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Transpose</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="caseCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>70</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Case Sensitive</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="tracebackCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>70</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Manual Traceback</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="resetButton">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>70</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset</string>
+    </property>
    </widget>
   </widget>
  </widget>

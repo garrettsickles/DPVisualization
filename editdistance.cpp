@@ -1,9 +1,10 @@
 #include "editdistance.h"
 #include "ui_mainwindow.h"
 
-EditDistance::EditDistance(QString s, QString t, QWidget *parent) : DPMatrix(s, t, parent)
+EditDistance::EditDistance(QString source, QString target, QWidget *parent) : DPMatrix(source, target, parent)
 {
     this->setup();
+    this->reset();
 }
 
 void EditDistance::setup()
@@ -51,7 +52,7 @@ void EditDistance::traceback(int row, int column) {
                 this->traceback(row, column-1);
             }
             else if(this->at(row-1, column) == low) {
-                this->con.push_front("m");
+                this->con.push_front("d");
                 this->rs.push_front(this->getSource().at(row-1));
                 this->cs.push_front("-");
                 this->traceback(row-1, column);
@@ -66,7 +67,7 @@ int EditDistance::calculate(int row, int column) {
     else {
         int del = calculate(row-1, column) + DELETE_COST;
         int ins = calculate(row, column-1) + INSERT_COST;
-        int sub = calculate(row - 1, column - 1) + (this->getSource().at(row-1).toLower() != this->getTarget().at(column-1).toLower())*REPLACE_COST;
+        int sub = calculate(row - 1, column - 1) + !(this->same(this->getSource().at(row-1), this->getTarget().at(column-1)))*REPLACE_COST;
         this->set(row, column, this->min(sub, min(del, ins)));
     }
      return this->at(row, column);

@@ -3,6 +3,7 @@
 DPMatrix::DPMatrix(QString source, QString target, QWidget *parent) : QWidget(parent)
 {
     this->initialize(source, target);
+    this->update();
 }
 
 DPMatrix::~DPMatrix()
@@ -25,6 +26,13 @@ void DPMatrix::initialize(QString source, QString target)
         }
     }
     this->setGeometry(0, 0, this->squareSize * this->columns, this->squareSize * this->rows);
+}
+
+void DPMatrix::resizeSquare(int s)
+{
+    this->squareSize = s;
+    this->setGeometry(0, 0, this->squareSize * this->columns, this->squareSize * this->rows);
+    this->repaint();
 }
 
 int DPMatrix::maxLength()
@@ -51,6 +59,7 @@ bool DPMatrix::valid(int row, int column)
 int DPMatrix::at(int row, int column)
 {
     if(valid(row, column)) return this->matrix[row][column];
+    else return -1;
 }
 
 void DPMatrix::set(int row, int column, int value)
@@ -71,6 +80,32 @@ QString DPMatrix::getSource()
 QString DPMatrix::getTarget()
 {
     return this->target;
+}
+
+bool DPMatrix::same(QChar a, QChar b)
+{
+    if(this->caseSensitive) return a == b;
+    else return a.toLower() == b.toLower();
+}
+
+void DPMatrix::setCaseSensitive(bool b)
+{
+    this->caseSensitive = b;
+}
+
+void DPMatrix::setManualTraceback(bool b)
+{
+    this->manualTraceback = b;
+}
+
+bool DPMatrix::getCaeSensitive()
+{
+    return this->caseSensitive;
+}
+
+bool DPMatrix::getManualTraceback()
+{
+    return this->manualTraceback;
 }
 
 void DPMatrix::mouseReleaseEvent(QMouseEvent *event)
@@ -101,7 +136,9 @@ void DPMatrix::paintEvent(QPaintEvent *event)
         for (int column = 0; column < columns; column++)
             painter.drawRect(column*squareSize, row*squareSize, squareSize, squareSize);
 
-    painter.setFont(QFont("Courier", 12));
+    this->font = QFont("Courier", 12);
+    font.setPixelSize(squareSize*0.6);
+    painter.setFont(font);
     QFontMetrics fontMetrics(painter.font());
     painter.setPen(QPen(Qt::black));
 
@@ -120,7 +157,6 @@ void DPMatrix::paintEvent(QPaintEvent *event)
     for (int row = 1; row < this->rows; ++row) {
         for (int column = 1; column < this->columns; ++column) {
             if(this->matrix[row - 1][column - 1] >= 0) {
-                //painter.setClipRect(column*squareSize, row*squareSize, squareSize, squareSize);
                 degree.setHsv((120.0 * (1 - ((float)(this->matrix[row - 1][column - 1])) / (float)(this->maxLength()))), 255, 255, 255);
                 painter.fillRect(column*squareSize + 1, row*squareSize + 1, squareSize - 1, squareSize - 1, degree);
                 painter.setPen(QPen(Qt::black));
@@ -137,10 +173,6 @@ void DPMatrix::paintEvent(QPaintEvent *event)
                 painter.drawRect((column+1)*squareSize, (row+1)*squareSize, squareSize, squareSize);
 }
 
-QSize DPMatrix::sizeHint() const
-{
-    return QSize(1000, 1000);
-}
 int DPMatrix::min(int a, int b)
 {
     return(b < a ? b : a);

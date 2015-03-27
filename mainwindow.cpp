@@ -15,9 +15,16 @@ void MainWindow::initialize()
     ui->setupUi(this);
     ui->targetInput->setText(INIT_SOURCE);
     ui->sourceInput->setText(INIT_TARGET);
-    connect(ui->updateButton, SIGNAL(clicked()), this, SLOT(update()));
+    ui->zoomSlider->setMinimum(30);
+    ui->zoomSlider->setMaximum(100);
+    connect(ui->sourceInput, SIGNAL(textEdited(QString)), this, SLOT(update()));
+    connect(ui->targetInput, SIGNAL(textEdited(QString)), this, SLOT(update()));
+    connect(ui->algorithmType, SIGNAL(currentIndexChanged(int)), this, SLOT(update()));
     connect(ui->transposeButton, SIGNAL(clicked()), this, SLOT(transpose()));
-    connect(ui->optionButton, SIGNAL(clicked()), this, SLOT(options()));
+    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(reset()));
+    connect(ui->zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(zoom()));
+    connect(ui->tracebackCheckBox, SIGNAL(stateChanged(int)), this, SLOT(update()));
+    connect(ui->caseCheckBox, SIGNAL(stateChanged(int)), this, SLOT(update()));
 }
 
 void MainWindow::update()
@@ -26,10 +33,17 @@ void MainWindow::update()
         this->source = ui->sourceInput->text();
         this->target = ui->targetInput->text();
         if(ui->matrixContents != NULL) delete ui->matrixContents;
-        if(ui->algorithmType->currentIndex() == 0)
+        if(ui->algorithmType->currentIndex() == 0) {
             ui->matrixContents = new EditDistance(this->source, this->target, this);
-        else if(ui->algorithmType->currentIndex() ==1)
+            dp = static_cast<EditDistance*>(ui->matrixContents);
+        }
+        else if(ui->algorithmType->currentIndex() ==1) {
             ui->matrixContents = new CommonSubsequence(this->source, this->target, this);
+            dp = static_cast<CommonSubsequence*>(ui->matrixContents);
+        }
+        dp->resizeSquare(ui->zoomSlider->value());
+        dp->setManualTraceback(ui->tracebackCheckBox->isChecked());
+        dp->setCaseSensitive(ui->caseCheckBox->isChecked());
 
         QRect r = ui->matrixDisplay->geometry();
 
@@ -62,9 +76,17 @@ void MainWindow::transpose()
     this->update();
 }
 
-void MainWindow::options()
+void MainWindow::reset()
 {
+    ui->targetInput->setText(INIT_SOURCE);
+    ui->sourceInput->setText(INIT_TARGET);
+    this->update();
+}
 
+void MainWindow::zoom()
+{
+    dp->resizeSquare(ui->zoomSlider->value());
+    ui->matrixContents->repaint();
 }
 
 MainWindow::~MainWindow()
