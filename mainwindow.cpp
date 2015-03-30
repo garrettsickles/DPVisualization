@@ -1,11 +1,12 @@
 #include "editdistance.h"
 #include "mainwindow.h"
-#include "dpmatrix.h"
+#include "displaygrid.h"
 #include "ui_mainwindow.h"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    this->dm = NULL;
     this->initialize();
     this->update();
 }
@@ -17,6 +18,7 @@ void MainWindow::initialize()
     ui->sourceInput->setText(INIT_TARGET);
     ui->zoomSlider->setMinimum(30);
     ui->zoomSlider->setMaximum(100);
+
     connect(ui->sourceInput, SIGNAL(textEdited(QString)), this, SLOT(update()));
     connect(ui->targetInput, SIGNAL(textEdited(QString)), this, SLOT(update()));
     connect(ui->algorithmType, SIGNAL(currentIndexChanged(int)), this, SLOT(update()));
@@ -29,44 +31,35 @@ void MainWindow::initialize()
 
 void MainWindow::update()
 {
-    if(ui->sourceInput->text().length() < DEFAULT_MAX_LENGTH && ui->targetInput->text().length() < DEFAULT_MAX_LENGTH) {
-        this->source = ui->sourceInput->text();
-        this->target = ui->targetInput->text();
-        if(ui->matrixContents != NULL) delete ui->matrixContents;
-        if(ui->algorithmType->currentIndex() == 0) {
-            ui->matrixContents = new EditDistance(this->source, this->target, this);
-            dp = static_cast<EditDistance*>(ui->matrixContents);
-        }
-        else if(ui->algorithmType->currentIndex() ==1) {
-            ui->matrixContents = new CommonSubsequence(this->source, this->target, this);
-            dp = static_cast<CommonSubsequence*>(ui->matrixContents);
-        }
-        dp->resizeSquare(ui->zoomSlider->value());
-        dp->setManualTraceback(ui->tracebackCheckBox->isChecked());
-        dp->setCaseSensitive(ui->caseCheckBox->isChecked());
+    this->source = ui->sourceInput->text();
+    this->target = ui->targetInput->text();
 
-        QRect r = ui->matrixDisplay->geometry();
+    if(dm != NULL) delete dm;
+    if(ui->algorithmType->currentIndex() == 0) {
+        dm = new DPDisplay(new EditDistance(this->source.toStdString(), this->target.toStdString()), this);
+    }
+    else if(ui->algorithmType->currentIndex() ==1) {
+        dm = new DPDisplay(new CommonSubsequence(this->source.toStdString(), this->target.toStdString()), this);
+    }
 
-        ui->matrixDisplay = new QScrollArea(this);
-        ui->matrixDisplay->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        ui->matrixDisplay->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        ui->matrixDisplay->setGeometry(r);
-        ui->matrixDisplay->setFixedHeight(r.height());
-        ui->matrixDisplay->setFixedWidth(r.width());
-        ui->matrixDisplay->setWidget(ui->matrixContents);
-        ui->matrixDisplay->adjustSize();
-        ui->matrixDisplay->show();
-        ui->matrixContents->show();
-        this->setFixedSize(this->size());
-    }
-    else {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Source or Target too Long!!!");
-        messageBox.setFixedSize(500,200);
-        ui->targetInput->setText(INIT_SOURCE);
-        ui->sourceInput->setText(INIT_TARGET);
-        this->update();
-    }
+    for(int i = 2; i < dm->getRows(); i++) dm->set(i, 0, this->source.at(i-2));
+    for(int i = 2; i < dm->getColumns(); i++) dm->set(0, i, this->target.at(i-2));
+
+    ui->matrixContents = dm;
+    this->zoom();
+
+    QRect r = ui->matrixDisplay->geometry();
+    ui->matrixDisplay = new QScrollArea(this);
+    ui->matrixDisplay->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->matrixDisplay->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->matrixDisplay->setGeometry(r);
+    ui->matrixDisplay->setFixedHeight(r.height());
+    ui->matrixDisplay->setFixedWidth(r.width());
+    ui->matrixDisplay->setWidget(ui->matrixContents);
+    ui->matrixDisplay->adjustSize();
+    ui->matrixDisplay->show();
+    ui->matrixContents->show();
+    this->setFixedSize(this->size());
 }
 
 void MainWindow::transpose()
@@ -80,16 +73,18 @@ void MainWindow::reset()
 {
     ui->targetInput->setText(INIT_SOURCE);
     ui->sourceInput->setText(INIT_TARGET);
+
     this->update();
 }
 
 void MainWindow::zoom()
 {
-    dp->resizeSquare(ui->zoomSlider->value());
+    dm->setCellSize(ui->zoomSlider->value(), ui->zoomSlider->value());
     ui->matrixContents->repaint();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete dm;
 }

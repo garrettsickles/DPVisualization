@@ -6,6 +6,8 @@
 #include <QMainWindow>
 #include "editdistance.h"
 #include "commonsubsequence.h"
+#include "displaygrid.h"
+#include "dpdisplay.h"
 
 #define INIT_SOURCE "Elephant"
 #define INIT_TARGET "Anaconda"
@@ -25,11 +27,13 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    DPMatrix *dp;
+    DPDisplay *dm;
+
     QString source;
     QString target;
 
     void initialize();
+    void clear();
 
 private slots:
     void update();
