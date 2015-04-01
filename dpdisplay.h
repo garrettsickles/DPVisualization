@@ -11,6 +11,7 @@ public:
     ~DPDisplay();
 
     EditDistance* get();
+    void setManualTraceback(bool);
     void updateDisplay();
 
 protected:
@@ -18,7 +19,12 @@ protected:
 
 private:
     void setup();
+
+    bool manualTarceback;
     EditDistance* ed;
+
+    int previousRow;
+    int previousColumn;
 };
 
 #endif // DPDISPLAY_H

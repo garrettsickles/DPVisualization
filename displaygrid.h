@@ -49,12 +49,12 @@ protected:
 
     int getCellWidth();
     int getCellHeight();
+    void reset();
 
-private:
     bool isValidCell(int, int);
     bool isEmpty(int, int);
 
-    void reset();
+private:
 
     int rows;
     int columns;

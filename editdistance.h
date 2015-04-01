@@ -19,6 +19,7 @@ public:
 
     virtual void initialize();
     virtual void traceback(int row, int column);
+    virtual bool validTracebackPair(int r1, int c1, int r2, int c2);
     virtual int calculate(int row, int column);
     //virtual QString getToolTipText(int, int);
 
@@ -33,13 +34,12 @@ public:
     int getInvalidCost();
     int getCost(int, int);
     bool getTraceback(int, int);
-
-protected:
-    //virtual void manualTraceback(int row, int column);
-    //virtual void autoTraceback(int row, int column);
-
     void setCost(int, int, int);
     void setTraceback(int, int, bool);
+
+    void resetTraceback();
+
+protected:
     bool valid(int, int);
     bool same(char, char);
 

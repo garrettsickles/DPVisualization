@@ -45,6 +45,7 @@ void MainWindow::update()
     for(int i = 2; i < dm->getRows(); i++) dm->set(i, 0, this->source.at(i-2));
     for(int i = 2; i < dm->getColumns(); i++) dm->set(0, i, this->target.at(i-2));
 
+    dm->get()->setCaseSensitive(ui->caseCheckBox->isChecked());
     ui->matrixContents = dm;
     this->zoom();
 

@@ -4,6 +4,10 @@ EditDistance::EditDistance(std::string source, std::string target)
 {
     this->source = source;
     this->target = target;
+    this->deleteCost = DEFAULT_DELETE_COST;
+    this->insertCost = DEFAULT_INSERT_COST;
+    this->replaceCost = DEFAULT_REPLACE_COST;
+    this->matchCost = DEFAULT_MATCH_COST;
     this->invalidCost = this->getRows() + this->getColumns();
     this->cost = new int*[this->getRows()];
     this->inTraceback = new bool*[this->getRows()];
@@ -57,6 +61,8 @@ void EditDistance::initialize()
     for(int i = 1; i < this->getRows(); i++)
         for(int j = 1; j < this->getColumns(); j++)
             this->cost[i][j] = this->invalidCost;
+
+    this->resetTraceback();
 }
 
 void EditDistance::setCost(int row, int column, int cost)
@@ -93,6 +99,13 @@ bool EditDistance::getTraceback(int row, int column)
     else return false;
 }
 
+void EditDistance::resetTraceback()
+{
+    for(int i = 0; i < this->getRows(); i++)
+        for(int j = 0; j < this->getColumns(); j++)
+            this->inTraceback[i][j] = false;
+}
+
 /*
 if(manual) {
     this->max = this->at(row,column);
@@ -108,7 +121,7 @@ void EditDistance::traceback(int row, int column)
     else {
         int low = std::min(this->getCost(row-1, column-1),std::min(this->getCost(row, column-1),this->getCost(row-1, column)));
         if(this->getCost(row-1, column-1) == low) {
-            if(this->getCost(row, column) == this->getCost(row-1, column-1)) this->conversion.push_back('m');
+            if(this->getCost(row, column) == this->getCost(row-1, column-1));
             this->traceback(row-1, column-1);
         }
         else if(this->getCost(row, column-1) == low) {
@@ -119,6 +132,18 @@ void EditDistance::traceback(int row, int column)
         }
     }
     this->setTraceback(row, column, true);
+}
+
+bool EditDistance::validTracebackPair(int r1, int c1, int r2, int c2)
+{
+    if((r1-r2 == 1 && c1-c2 == 1) || (r1-r2 == 0 && c1-c2 == 1) ||(r1-r2 == 1 && c1-c2 == 0)) {
+        int low = std::min(this->getCost(r1-1, c1-1),std::min(this->getCost(r1, c1-1),this->getCost(r1-1, c1)));
+        //if(this->getCost(r2, c2) != low) return false;
+        if(this->getCost(r1-1,c1) == this->getCost(r1,c1) && r1-1 == r2 && c1 == c2) return false;
+        if(this->getCost(r1,c1-1) == this->getCost(r1,c1) && r1 == r2 && c1-1 == c2) return false;
+        else return this->getCost(r2, c2) == low;
+    }
+    else return false;
 }
 
 int EditDistance::calculate(int row, int column) {

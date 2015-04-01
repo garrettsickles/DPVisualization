@@ -14,7 +14,7 @@ DisplayGrid::DisplayGrid(int rows, int columns, QWidget *parent) : QWidget(paren
         this->cellColors[i] = new QColor[this->columns];
         this->highlights[i] = new bool[this->columns];
     }
-    this->setGeometry(0, 0, this->columns*this->cellWidth, this->rows*this->cellHeight);
+    this->setGeometry(0, 0, (this->columns+1)*this->cellWidth, (this->rows+1)*this->cellHeight);
     this->reset();
 }
 
@@ -107,7 +107,6 @@ void DisplayGrid::paintEvent(QPaintEvent* event)
             text = this->get(row, column);
             pos.setX(column*this->cellWidth);
             pos.setY(row*this->cellHeight);
-            painter.setClipRect(pos.x(), pos.y(), this->cellWidth, this->cellHeight);
             painter.fillRect(pos.x() + 1, pos.y() + 1, this->cellWidth - 1, this->cellHeight - 1, this->cellColors[row][column]);
             painter.setPen(QPen(this->penColor));
             painter.drawText(pos.x() + (this->cellWidth / 2) - fontMetrics.width(text)/2, pos.y() + fontMetrics.ascent() + 4, text);
