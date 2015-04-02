@@ -56,8 +56,9 @@ int EditDistance::getColumns()
 
 void EditDistance::initialize()
 {
-    for(int i = 0; i < this->getRows(); i++) this->cost[i][0] = i;
-    for(int j = 0; j < this->getColumns(); j++) this->cost[0][j] = j;
+    this->cost[0][0] = 0;
+    for(int i = 1; i < this->getRows(); i++) this->cost[i][0] = this->cost[i-1][0] + this->deleteCost;
+    for(int j = 1; j < this->getColumns(); j++) this->cost[0][j] = this->cost[0][j-1] + this->insertCost;
     for(int i = 1; i < this->getRows(); i++)
         for(int j = 1; j < this->getColumns(); j++)
             this->cost[i][j] = this->invalidCost;
