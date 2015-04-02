@@ -15,7 +15,7 @@ class EditDistance
 {
 public:
     EditDistance(std::string, std::string);
-    ~EditDistance();
+    virtual ~EditDistance();
 
     virtual void initialize();
     virtual void traceback(int row, int column);

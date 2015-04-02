@@ -30,14 +30,14 @@ void DPDisplay::updateDisplay()
     this->repaint();
 }
 
-EditDistance* DPDisplay::get()
-{
-    return this->ed;
-}
-
 void DPDisplay::setManualTraceback(bool b)
 {
     this->manualTarceback = b;
+}
+
+EditDistance* DPDisplay::get()
+{
+    return this->ed;
 }
 
 void DPDisplay::setup()

@@ -121,7 +121,7 @@ void EditDistance::traceback(int row, int column)
     else {
         int low = std::min(this->getCost(row-1, column-1),std::min(this->getCost(row, column-1),this->getCost(row-1, column)));
         if(this->getCost(row-1, column-1) == low) {
-            if(this->getCost(row, column) == this->getCost(row-1, column-1));
+            //if(this->getCost(row, column) == this->getCost(row-1, column-1));
             this->traceback(row-1, column-1);
         }
         else if(this->getCost(row, column-1) == low) {
@@ -138,7 +138,6 @@ bool EditDistance::validTracebackPair(int r1, int c1, int r2, int c2)
 {
     if((r1-r2 == 1 && c1-c2 == 1) || (r1-r2 == 0 && c1-c2 == 1) ||(r1-r2 == 1 && c1-c2 == 0)) {
         int low = std::min(this->getCost(r1-1, c1-1),std::min(this->getCost(r1, c1-1),this->getCost(r1-1, c1)));
-        //if(this->getCost(r2, c2) != low) return false;
         if(this->getCost(r1-1,c1) == this->getCost(r1,c1) && r1-1 == r2 && c1 == c2) return false;
         if(this->getCost(r1,c1-1) == this->getCost(r1,c1) && r1 == r2 && c1-1 == c2) return false;
         else return this->getCost(r2, c2) == low;

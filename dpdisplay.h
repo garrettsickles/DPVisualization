@@ -11,8 +11,8 @@ public:
     ~DPDisplay();
 
     EditDistance* get();
-    void setManualTraceback(bool);
     void updateDisplay();
+    void setManualTraceback(bool);
 
 protected:
     void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
