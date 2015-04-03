@@ -68,11 +68,17 @@ void DPDisplay::mouseReleaseEvent(QMouseEvent* event)
             this->ed->resetTraceback();
             this->ed->setTraceback(row, column, true);
         }
-    } else {
+    } else  {
         this->ed->resetTraceback();
         this->ed->traceback(row, column);
     }
     this->previousRow = row;
     this->previousColumn = column;
     this->updateDisplay();
+    if(this->ed->getTraceback(row, column)) {
+        QMessageBox msg;
+        msg.setText(this->getToolTipText(row, column));
+        msg.setButtonText(1, "Continue");
+        msg.exec();
+    }
 }

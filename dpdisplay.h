@@ -18,7 +18,6 @@ public:
 
 protected:
     void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
 private:
     bool manualTarceback;
