@@ -12,6 +12,19 @@ DPDisplay::~DPDisplay()
     if(this->ed != NULL) delete this->ed;
 }
 
+QString DPDisplay::getToolTipText(int row, int column)
+{
+    QString text = QString::fromLatin1("<p><span style=\"font-size: 36pt; font-family: %1\">").arg(QFont("Courier New", 36).family());
+    text += "<table>";
+    text += "<tr><td>Cost: </td><td>" + QString::number(this->ed->getCost(row, column)) + "</td></tr>";
+    text += "<tr><td>From: </td><td><strong>" + QString::fromStdString(this->ed->pseudoSource()) + "</strong></td></tr>";
+    text += "<tr><td></td><td>" + QString::fromStdString(this->ed->pseudoConversion()) + "</td></tr>";
+    text += "<tr><td>To: </td><td><strong>" + QString::fromStdString(this->ed->pseudoTarget()) + "</strong></td></tr>";
+    text += "</table>";
+    text += "</span></p>";
+    return text;
+}
+
 void DPDisplay::updateDisplay()
 {
     QColor c;
@@ -40,11 +53,6 @@ EditDistance* DPDisplay::get()
     return this->ed;
 }
 
-void DPDisplay::setup()
-{
-
-}
-
 void DPDisplay::mouseReleaseEvent(QMouseEvent* event)
 {
     QPoint position = mapFromGlobal(event->globalPos());
@@ -53,8 +61,9 @@ void DPDisplay::mouseReleaseEvent(QMouseEvent* event)
 
     this->ed->calculate(row, column);
     if(this->manualTarceback) {
-        if(this->ed->validTracebackPair(this->previousRow, this->previousColumn, row, column))
+        if(this->ed->validTraceback(this->previousRow, this->previousColumn, row, column)) {
             this->ed->setTraceback(row, column, true);
+        }
         else {
             this->ed->resetTraceback();
             this->ed->setTraceback(row, column, true);

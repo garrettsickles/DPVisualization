@@ -19,9 +19,8 @@ public:
 
     virtual void initialize();
     virtual void traceback(int row, int column);
-    virtual bool validTracebackPair(int r1, int c1, int r2, int c2);
+    virtual bool validTraceback(int r1, int c1, int r2, int c2);
     virtual int calculate(int row, int column);
-    //virtual QString getToolTipText(int, int);
 
     void setCaseSensitive(bool);
 
@@ -36,8 +35,11 @@ public:
     bool getTraceback(int, int);
     void setCost(int, int, int);
     void setTraceback(int, int, bool);
-
     void resetTraceback();
+
+    std::string pseudoConversion();
+    std::string pseudoSource();
+    std::string pseudoTarget();
 
 protected:
     bool valid(int, int);
@@ -51,7 +53,7 @@ private:
 
     std::string source;
     std::string target;
-    std::string conversion;
+    std::string pConversion;
     std::string pTarget;
     std::string pSource;
 

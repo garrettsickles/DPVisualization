@@ -15,6 +15,7 @@ DisplayGrid::DisplayGrid(int rows, int columns, QWidget *parent) : QWidget(paren
         this->highlights[i] = new bool[this->columns];
     }
     this->setGeometry(0, 0, (this->columns+1)*this->cellWidth, (this->rows+1)*this->cellHeight);
+    this->setMouseTracking(true);
     this->reset();
 }
 

@@ -14,12 +14,13 @@ public:
     void updateDisplay();
     void setManualTraceback(bool);
 
+    QString getToolTipText(int, int);
+
 protected:
     void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
 private:
-    void setup();
-
     bool manualTarceback;
     EditDistance* ed;
 
