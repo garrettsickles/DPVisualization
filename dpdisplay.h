@@ -10,7 +10,7 @@ public:
     DPDisplay(EditDistance*, QWidget*);
     ~DPDisplay();
 
-    EditDistance* get();
+    EditDistance* getCellText();
     void updateDisplay();
     void setManualTraceback(bool);
 

@@ -30,29 +30,28 @@ public:
     ~DisplayGrid();
 
     void setCellSize(int, int);
+    void setCellColor(int, int, QColor);
+    int getCellWidth();
+    int getCellHeight();
+
     void setInvalidToken(QString);
 
-    void highlight(int, int, bool);
-    bool isHighlighted(int, int);
+    void highlightCell(int, int, bool);
+    bool isCellHighlighted(int, int);
 
-    void set(int, int, QString);
-    QString get(int, int);
-
-    void setCellColor(int, int, QColor);
+    void setCellText(int, int, QString);
+    QString getCellText(int, int);
 
     int getRows();
     int getColumns();
 
-protected:
-    void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
-    void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
-
-    int getCellWidth();
-    int getCellHeight();
     void reset();
 
     bool isValidCell(int, int);
     bool isEmpty(int, int);
+protected:
+    void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
 
 private:
 

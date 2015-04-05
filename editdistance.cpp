@@ -89,6 +89,14 @@ int EditDistance::getMaxCost()
     return std::max(this->source.length(), this->target.length());
 }
 
+void EditDistance::setOperationCosts(int match, int sub, int ins, int del)
+{
+    this->matchCost = match;
+    this->replaceCost = sub;
+    this->insertCost = ins;
+    this->deleteCost = del;
+}
+
 void EditDistance::setTraceback(int row, int column, bool b)
 {
     if(this->valid(row, column)) this->inTraceback[row][column] = b;

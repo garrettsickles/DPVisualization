@@ -30,6 +30,7 @@ public:
     int getRows();
     int getColumns();
     int getMaxCost();
+    void setOperationCosts(int, int, int, int);
     int getInvalidCost();
     int getCost(int, int);
     bool getTraceback(int, int);

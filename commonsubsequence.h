@@ -11,21 +11,12 @@ public:
     CommonSubsequence(std::string, std::string);
     ~CommonSubsequence();
 
-    void initialize();
-    void traceback(int row, int column);
-    int calculate(int row, int column);
+    virtual void initialize();
+    virtual void traceback(int row, int column);
+    virtual bool validTraceback(int r1, int c1, int r2, int c2);
+    virtual int calculate(int row, int column);
 
-    QString getToolTipText(int, int);
-
-protected:
-    void autoTraceback(int row, int column);
-    void manualTraceback(int row, int column);
 private:
-    QString rs;
-    QString cs;
-    QString lcs;
-
-    void reset();
 };
 
 #endif // COMMONSUBSEQUENCE_H

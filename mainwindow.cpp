@@ -43,10 +43,10 @@ void MainWindow::update()
         dm = new DPDisplay(new CommonSubsequence(this->source.toStdString(), this->target.toStdString()), this);
     }
 
-    for(int i = 2; i < dm->getRows(); i++) dm->set(i, 0, this->source.at(i-2));
-    for(int i = 2; i < dm->getColumns(); i++) dm->set(0, i, this->target.at(i-2));
+    for(int i = 2; i < dm->getRows(); i++) dm->setCellText(i, 0, this->source.at(i-2));
+    for(int i = 2; i < dm->getColumns(); i++) dm->setCellText(0, i, this->target.at(i-2));
 
-    dm->get()->setCaseSensitive(ui->caseCheckBox->isChecked());
+    dm->getCellText()->setCaseSensitive(ui->caseCheckBox->isChecked());
     dm->setManualTraceback(ui->tracebackCheckBox->isChecked());
     ui->matrixContents = dm;
     this->zoom();

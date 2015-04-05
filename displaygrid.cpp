@@ -43,25 +43,25 @@ void DisplayGrid::setCellColor(int row, int column, QColor c)
     this->cellColors[row][column] = c;
 }
 
-void DisplayGrid::highlight(int row, int column, bool b)
+void DisplayGrid::highlightCell(int row, int column, bool b)
 {
     if(this->isValidCell(row, column)) this->highlights[row][column] = b;
     else;
 }
 
-bool DisplayGrid::isHighlighted(int row, int column)
+bool DisplayGrid::isCellHighlighted(int row, int column)
 {
     if(this->isValidCell(row, column)) return this->highlights[row][column];
     else return false;
 }
 
-void DisplayGrid::set(int row, int column, QString t)
+void DisplayGrid::setCellText(int row, int column, QString t)
 {
     if(this->isValidCell(row, column)) this->values[row][column] = t;
     else this->values = NULL;
 }
 
-QString DisplayGrid::get(int row, int column)
+QString DisplayGrid::getCellText(int row, int column)
 {
     if(this->isValidCell(row, column)) return this->values[row][column];
     else return INVALID_TOKEN;
@@ -105,7 +105,7 @@ void DisplayGrid::paintEvent(QPaintEvent* event)
     painter.setPen(QPen(this->penColor));
     for (int row = 0; row < this->rows; row++) {
         for (int column = 0; column < this->columns; column++) {
-            text = this->get(row, column);
+            text = this->getCellText(row, column);
             pos.setX(column*this->cellWidth);
             pos.setY(row*this->cellHeight);
             painter.fillRect(pos.x() + 1, pos.y() + 1, this->cellWidth - 1, this->cellHeight - 1, this->cellColors[row][column]);
@@ -117,7 +117,7 @@ void DisplayGrid::paintEvent(QPaintEvent* event)
     painter.setPen(QPen(this->highlightColor, 3));
     for (int row = 0; row < this->rows; row++)
         for (int column = 0; column < this->columns; column++)
-            if(this->isHighlighted(row, column))
+            if(this->isCellHighlighted(row, column))
                 painter.drawRect(column*this->cellWidth, row*this->cellHeight, this->cellWidth, this->cellHeight);
 }
 
