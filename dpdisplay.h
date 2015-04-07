@@ -25,6 +25,8 @@ private:
 
     int previousRow;
     int previousColumn;
+    int startRow;
+    int startColumn;
 };
 
 #endif // DPDISPLAY_H

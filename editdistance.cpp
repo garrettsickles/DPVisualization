@@ -119,6 +119,44 @@ void EditDistance::resetTraceback()
     this->pTarget.clear();
 }
 
+void EditDistance::retrace(int row, int column)
+{
+    int r = row;
+    int c = column;
+    row = 0;
+    column = 0;
+    this->pConversion.clear();
+    this->pSource.clear();
+    this->pTarget.clear();
+
+    if(this->getTraceback(row, column)) {
+        while(row != r || column != c) {
+            if(this->getTraceback(row+1, column)) {
+                this->pConversion.push_back('d');
+                this->pSource.push_back(this->getSource().at(row));
+                this->pTarget.push_back('-');
+                row += 1;
+            } else if(this->getTraceback(row, column+1)) {
+                this->pConversion.push_back('i');
+                this->pSource.push_back('-');
+                this->pTarget.push_back(this->getTarget().at(column));
+                column += 1;
+            } else if(this->getTraceback(row+1, column+1)) {
+                this->getCost(row, column) == this->getCost(row+1, column+1) ? this->pConversion.push_back('m') : this->pConversion.push_back('s');
+                this->pSource.push_back(this->getSource().at(row));
+                this->pTarget.push_back(this->getTarget().at(column));
+                row += 1;
+                column += 1;
+            } else {
+                this->pConversion.clear();
+                this->pSource.clear();
+                this->pTarget.clear();
+                break;
+            }
+        }
+    }
+}
+
 void EditDistance::traceback(int row, int column)
 {
     if(row == 0 && column == 0);
