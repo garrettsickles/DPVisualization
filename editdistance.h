@@ -22,6 +22,7 @@ public:
     virtual void traceback(int row, int column);
     virtual bool validTraceback(int r1, int c1, int r2, int c2);
     virtual int calculate(int row, int column);
+    virtual int optimal(int, int, int);
 
     void setCaseSensitive(bool);
 
@@ -47,20 +48,21 @@ protected:
     bool valid(int, int);
     bool same(char, char);
 
-private:
-    double matchCost;
-    double deleteCost;
-    double insertCost;
-    double replaceCost;
-
-    std::string source;
-    std::string target;
     std::string pConversion;
     std::string pTarget;
     std::string pSource;
 
-    bool caseSensitive;
+    int matchCost;
+    int deleteCost;
+    int insertCost;
+    int replaceCost;
     int invalidCost;
+
+private:
+    std::string source;
+    std::string target;
+
+    bool caseSensitive;
 
     int** cost;
     bool** inTraceback;

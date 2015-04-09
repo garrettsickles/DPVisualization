@@ -15,7 +15,9 @@ public:
     virtual void traceback(int row, int column);
     virtual bool validTraceback(int r1, int c1, int r2, int c2);
     virtual int calculate(int row, int column);
+    virtual int optimal(int, int, int);
 
+    int getMaxCost();
 private:
 };
 
