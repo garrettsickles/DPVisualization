@@ -56,8 +56,15 @@ void EditDistance::initialize()
     this->insertCost = DEFAULT_INSERT_COST;
     this->replaceCost = DEFAULT_REPLACE_COST;
     this->matchCost = DEFAULT_MATCH_COST;
+
+    this->matchText = DEFAULT_MATCH_TEXT;
+    this->replaceText = DEFAULT_REPLACE_TEXT;
+    this->insertText = DEFAULT_INSERT_TEXT;
+    this->deleteText = DEFAULT_DELETE_TEXT;
+
     this->caseSensitive = false;
     this->invalidCost = this->getRows() + this->getColumns();
+
     this->cost[0][0] = 0;
     for(int i = 1; i < this->getRows(); i++) this->cost[i][0] = this->cost[i-1][0] + this->deleteCost;
     for(int j = 1; j < this->getColumns(); j++) this->cost[0][j] = this->cost[0][j-1] + this->insertCost;
@@ -89,12 +96,21 @@ int EditDistance::getMaxCost()
     return std::max(this->source.length(), this->target.length());
 }
 
-void EditDistance::setOperationCosts(int match, int sub, int ins, int del)
+void EditDistance::setOperationCosts(int match, int sub, int ins, int del, int invalid)
 {
     this->matchCost = match;
     this->replaceCost = sub;
     this->insertCost = ins;
     this->deleteCost = del;
+    this->invalidCost = invalid;
+}
+
+void EditDistance::setOperationText(char match, char sub, char ins, char del)
+{
+    this->matchText = match;
+    this->replaceText = sub;
+    this->insertText = ins;
+    this->deleteText = del;
 }
 
 void EditDistance::setTraceback(int row, int column, bool b)
@@ -132,17 +148,17 @@ void EditDistance::retrace(int row, int column)
     if(this->getTraceback(row, column)) {
         while(row != r || column != c) {
             if(this->getTraceback(row+1, column)) {
-                this->pConversion.push_back('d');
+                this->pConversion.push_back(this->deleteText);
                 this->pSource.push_back(this->getSource().at(row));
                 this->pTarget.push_back('-');
                 row += 1;
             } else if(this->getTraceback(row, column+1)) {
-                this->pConversion.push_back('i');
+                this->pConversion.push_back(this->insertText);
                 this->pSource.push_back('-');
                 this->pTarget.push_back(this->getTarget().at(column));
                 column += 1;
             } else if(this->getTraceback(row+1, column+1)) {
-                this->getCost(row, column) == this->getCost(row+1, column+1) ? this->pConversion.push_back('m') : this->pConversion.push_back('s');
+                this->getCost(row, column) == this->getCost(row+1, column+1) ? this->pConversion.push_back(this->matchText) : this->pConversion.push_back(this->replaceText);
                 this->pSource.push_back(this->getSource().at(row));
                 this->pTarget.push_back(this->getTarget().at(column));
                 row += 1;
@@ -164,20 +180,20 @@ void EditDistance::traceback(int row, int column)
         int low = this->optimal(this->getCost(row-1, column-1), this->getCost(row, column-1), this->getCost(row-1, column));
         if(this->getCost(row-1, column-1) == low) {
             this->traceback(row-1, column-1);
-            this->getCost(row, column) == this->getCost(row-1, column-1) ? this->pConversion.push_back('m') : this->pConversion.push_back('s');
+            this->getCost(row, column) == this->getCost(row-1, column-1) ? this->pConversion.push_back(this->matchText) : this->pConversion.push_back(this->replaceText);
             this->pSource.push_back(this->getSource().at(row-1));
             this->pTarget.push_back(this->getTarget().at(column-1));
         }
         else if(this->getCost(row, column-1) == low) {
             this->traceback(row, column-1);
-            this->pConversion.push_back('i');
+            this->pConversion.push_back(this->insertText);
             this->pSource.push_back('-');
             this->pTarget.push_back(this->getTarget().at(column-1));
         }
 
         else if(this->getCost(row-1, column) == low) {
             this->traceback(row-1, column);
-            this->pConversion.push_back('d');
+            this->pConversion.push_back(this->deleteText);
             this->pSource.push_back(this->getSource().at(row-1));
             this->pTarget.push_back('-');
         }

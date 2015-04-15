@@ -11,6 +11,11 @@ const int DEFAULT_DELETE_COST = 1;
 const int DEFAULT_INSERT_COST = 1;
 const int DEFAULT_REPLACE_COST = 1;
 
+const char DEFAULT_MATCH_TEXT = 'm';
+const char DEFAULT_DELETE_TEXT = 'd';
+const char DEFAULT_INSERT_TEXT = 'i';
+const char DEFAULT_REPLACE_TEXT = 's';
+
 class EditDistance
 {
 public:
@@ -32,7 +37,8 @@ public:
     int getRows();
     int getColumns();
     int getMaxCost();
-    void setOperationCosts(int, int, int, int);
+    void setOperationCosts(int match, int sub, int ins, int del, int invalid);
+    void setOperationText(char match, char sub, char ins, char del);
     int getInvalidCost();
     int getCost(int, int);
     bool getTraceback(int, int);
@@ -51,6 +57,11 @@ protected:
     std::string pConversion;
     std::string pTarget;
     std::string pSource;
+
+    char matchText;
+    char insertText;
+    char deleteText;
+    char replaceText;
 
     int matchCost;
     int deleteCost;
