@@ -23,7 +23,7 @@ void MainWindow::initialize()
     connect(ui->targetInput, SIGNAL(textEdited(QString)), this, SLOT(update()));
     connect(ui->algorithmType, SIGNAL(currentIndexChanged(int)), this, SLOT(update()));
     connect(ui->transposeButton, SIGNAL(clicked()), this, SLOT(transpose()));
-    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(reset()));
+    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(update()));
     connect(ui->zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(zoom()));
     connect(ui->tracebackCheckBox, SIGNAL(stateChanged(int)), this, SLOT(update()));
     connect(ui->caseCheckBox, SIGNAL(stateChanged(int)), this, SLOT(update()));
@@ -103,12 +103,14 @@ void MainWindow::reset()
 {
     if(this->ui->algorithmType->currentIndex() == 1 || this->ui->algorithmType->currentIndex() == 0) {
         ui->targetInput->setEnabled(true);
-        ui->targetInput->setText(INIT_SOURCE);
-        ui->sourceInput->setText(INIT_TARGET);
+        ui->transposeButton->setEnabled(true);
+        ui->caseCheckBox->setEnabled(true);
     } else if(this->ui->algorithmType->currentIndex() == 2) {
         ui->sourceInput->setText("4259");
         ui->targetInput->setText(MMS);
         ui->targetInput->setEnabled(false);
+        ui->transposeButton->setEnabled(false);
+        ui->caseCheckBox->setEnabled(false);
     }
 }
 
