@@ -38,9 +38,19 @@ void MainWindow::update()
     if(dm != NULL) delete dm;
     if(ui->algorithmType->currentIndex() == 0) {
         dm = new DPDisplay(new EditDistance(this->source.toStdString(), this->target.toStdString()), this);
+        dm->getCellText()->setOptimalMin();
+        dm->getCellText()->setOperationCosts(0, 1, 1, 1);
+        dm->getCellText()->setOperationText('m', 's', 'i', 'd');
+        dm->getCellText()->initialize();
     }
-    else if(ui->algorithmType->currentIndex() ==1) {
-        dm = new DPDisplay(new CommonSubsequence(this->source.toStdString(), this->target.toStdString()), this);
+    else if(ui->algorithmType->currentIndex() == 1) {
+        dm = new DPDisplay(new EditDistance(this->source.toStdString(), this->target.toStdString()), this);
+        dm->getCellText()->setOptimalMax();
+        dm->getCellText()->setOperationCosts(1, 0, 0, 0);
+        dm->getCellText()->setOperationText('-', 'm', '-', '-');
+        dm->getCellText()->initialize();
+        this->dm->updateDisplay();
+        this->dm->repaint();
     }
 
     for(int i = 2; i < dm->getRows(); i++) dm->setCellText(i, 0, this->source.at(i-2));
@@ -63,6 +73,7 @@ void MainWindow::update()
     ui->matrixDisplay->show();
     ui->matrixContents->show();
     this->setFixedSize(this->size());
+
 }
 
 void MainWindow::transpose()

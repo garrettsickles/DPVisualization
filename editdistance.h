@@ -37,7 +37,7 @@ public:
     int getRows();
     int getColumns();
     int getMaxCost();
-    void setOperationCosts(int match, int sub, int ins, int del, int invalid);
+    void setOperationCosts(int match, int sub, int ins, int del);
     void setOperationText(char match, char sub, char ins, char del);
     int getInvalidCost();
     int getCost(int, int);
@@ -45,6 +45,8 @@ public:
     void setCost(int, int, int);
     void setTraceback(int, int, bool);
     void resetTraceback();
+    void setOptimalMin();
+    void setOptimalMax();
 
     std::string pseudoConversion();
     std::string pseudoSource();
@@ -74,6 +76,7 @@ private:
     std::string target;
 
     bool caseSensitive;
+    bool maxOptimal;
 
     int** cost;
     bool** inTraceback;

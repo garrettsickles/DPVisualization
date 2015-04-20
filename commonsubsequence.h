@@ -12,6 +12,7 @@ public:
     ~CommonSubsequence();
 
     virtual void initialize();
+    virtual void retrace(int, int);
     virtual void traceback(int row, int column);
     virtual bool validTraceback(int r1, int c1, int r2, int c2);
     virtual int calculate(int row, int column);

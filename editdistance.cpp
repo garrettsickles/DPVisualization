@@ -4,6 +4,21 @@ EditDistance::EditDistance(std::string source, std::string target)
 {
     this->source = source;
     this->target = target;
+    this->maxOptimal = false;
+
+    this->deleteCost = DEFAULT_DELETE_COST;
+    this->insertCost = DEFAULT_INSERT_COST;
+    this->replaceCost = DEFAULT_REPLACE_COST;
+    this->matchCost = DEFAULT_MATCH_COST;
+
+    this->matchText = DEFAULT_MATCH_TEXT;
+    this->replaceText = DEFAULT_REPLACE_TEXT;
+    this->insertText = DEFAULT_INSERT_TEXT;
+    this->deleteText = DEFAULT_DELETE_TEXT;
+
+    this->caseSensitive = false;
+    this->maxOptimal = false;
+    this->invalidCost = this->getRows() + this->getColumns() + 1;
 
     this->cost = new int*[this->getRows()];
     this->inTraceback = new bool*[this->getRows()];
@@ -52,19 +67,6 @@ int EditDistance::getColumns()
 
 void EditDistance::initialize()
 {
-    this->deleteCost = DEFAULT_DELETE_COST;
-    this->insertCost = DEFAULT_INSERT_COST;
-    this->replaceCost = DEFAULT_REPLACE_COST;
-    this->matchCost = DEFAULT_MATCH_COST;
-
-    this->matchText = DEFAULT_MATCH_TEXT;
-    this->replaceText = DEFAULT_REPLACE_TEXT;
-    this->insertText = DEFAULT_INSERT_TEXT;
-    this->deleteText = DEFAULT_DELETE_TEXT;
-
-    this->caseSensitive = false;
-    this->invalidCost = this->getRows() + this->getColumns();
-
     this->cost[0][0] = 0;
     for(int i = 1; i < this->getRows(); i++) this->cost[i][0] = this->cost[i-1][0] + this->deleteCost;
     for(int j = 1; j < this->getColumns(); j++) this->cost[0][j] = this->cost[0][j-1] + this->insertCost;
@@ -96,13 +98,12 @@ int EditDistance::getMaxCost()
     return std::max(this->source.length(), this->target.length());
 }
 
-void EditDistance::setOperationCosts(int match, int sub, int ins, int del, int invalid)
+void EditDistance::setOperationCosts(int match, int sub, int ins, int del)
 {
     this->matchCost = match;
     this->replaceCost = sub;
     this->insertCost = ins;
     this->deleteCost = del;
-    this->invalidCost = invalid;
 }
 
 void EditDistance::setOperationText(char match, char sub, char ins, char del)
@@ -158,7 +159,7 @@ void EditDistance::retrace(int row, int column)
                 this->pTarget.push_back(this->getTarget().at(column));
                 column += 1;
             } else if(this->getTraceback(row+1, column+1)) {
-                this->getCost(row, column) == this->getCost(row+1, column+1) ? this->pConversion.push_back(this->matchText) : this->pConversion.push_back(this->replaceText);
+                this->getCost(row, column) + this->matchCost == this->getCost(row+1, column+1) ? this->pConversion.push_back(this->matchText) : this->pConversion.push_back(this->replaceText);
                 this->pSource.push_back(this->getSource().at(row));
                 this->pTarget.push_back(this->getTarget().at(column));
                 row += 1;
@@ -177,21 +178,22 @@ void EditDistance::traceback(int row, int column)
 {
     if(row == 0 && column == 0);
     else {
-        int low = this->optimal(this->getCost(row-1, column-1), this->getCost(row, column-1), this->getCost(row-1, column));
-        if(this->getCost(row-1, column-1) == low) {
+        int opt = this->optimal(this->getCost(row-1, column-1), this->getCost(row, column-1), this->getCost(row-1, column));
+        if(this->getCost(row-1, column-1) == opt) {
             this->traceback(row-1, column-1);
-            this->getCost(row, column) == this->getCost(row-1, column-1) ? this->pConversion.push_back(this->matchText) : this->pConversion.push_back(this->replaceText);
+            if(this->getCost(row, column) == this->getCost(row-1, column-1) + this->matchCost) this->pConversion.push_back(this->matchText);
+            else this->pConversion.push_back(this->replaceText);
             this->pSource.push_back(this->getSource().at(row-1));
             this->pTarget.push_back(this->getTarget().at(column-1));
         }
-        else if(this->getCost(row, column-1) == low) {
+        else if(this->getCost(row, column-1) == opt) {
             this->traceback(row, column-1);
             this->pConversion.push_back(this->insertText);
             this->pSource.push_back('-');
             this->pTarget.push_back(this->getTarget().at(column-1));
         }
 
-        else if(this->getCost(row-1, column) == low) {
+        else if(this->getCost(row-1, column) == opt) {
             this->traceback(row-1, column);
             this->pConversion.push_back(this->deleteText);
             this->pSource.push_back(this->getSource().at(row-1));
@@ -204,10 +206,10 @@ void EditDistance::traceback(int row, int column)
 bool EditDistance::validTraceback(int r1, int c1, int r2, int c2)
 {
     if((r1-r2 == 1 && c1-c2 == 1) || (r1-r2 == 0 && c1-c2 == 1) ||(r1-r2 == 1 && c1-c2 == 0)) {
-        int low = this->optimal(this->getCost(r1-1, c1-1), this->getCost(r1, c1-1), this->getCost(r1-1, c1));
-        if(this->getCost(r1-1,c1) == this->getCost(r1,c1) && r1-1 == r2 && c1 == c2) return false;
-        if(this->getCost(r1,c1-1) == this->getCost(r1,c1) && r1 == r2 && c1-1 == c2) return false;
-        else return this->getCost(r2, c2) == low;
+        int opt = this->optimal(this->getCost(r1-1, c1-1), this->getCost(r1, c1-1), this->getCost(r1-1, c1));
+        if(this->getCost(r1-1,c1) + this->deleteCost != this->getCost(r1,c1) && r1-1 == r2 && c1 == c2) return false;
+        if(this->getCost(r1,c1-1) + this->insertCost != this->getCost(r1,c1) && r1 == r2 && c1-1 == c2) return false;
+        return this->getCost(r2, c2) == opt;
     }
     else return false;
 }
@@ -217,7 +219,9 @@ int EditDistance::calculate(int row, int column) {
     else {
         int del = calculate(row-1, column) + this->deleteCost;
         int ins = calculate(row, column-1) + this->insertCost;
-        int sub = calculate(row - 1, column - 1) + !(this->same(this->source.at(row-1), this->target.at(column-1)))*this->replaceCost;
+        int sub = calculate(row - 1, column - 1);
+        if(this->same(this->source.at(row-1), this->target.at(column-1))) sub += this->matchCost;
+        else sub += this->replaceCost;
         this->setCost(row, column, this->optimal(sub, del, ins));
     }
     return this->getCost(row, column);
@@ -225,7 +229,19 @@ int EditDistance::calculate(int row, int column) {
 
 int EditDistance::optimal(int a, int b, int c)
 {
-    return std::min(a, std::min(b, c));
+    if(this->maxOptimal) return std::max(a, std::max(b, c));
+    else return std::min(a, std::min(b, c));
+}
+
+
+void EditDistance::setOptimalMin()
+{
+    this->maxOptimal = false;
+}
+
+void EditDistance::setOptimalMax()
+{
+    this->maxOptimal = true;
 }
 
 bool EditDistance::same(char a, char b)
