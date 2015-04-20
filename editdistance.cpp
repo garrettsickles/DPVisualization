@@ -15,6 +15,7 @@ EditDistance::EditDistance(std::string source, std::string target)
     this->replaceText = DEFAULT_REPLACE_TEXT;
     this->insertText = DEFAULT_INSERT_TEXT;
     this->deleteText = DEFAULT_DELETE_TEXT;
+    this->bufferText = DEFAULT_BUFFER_TEXT;
 
     this->caseSensitive = false;
     this->maxOptimal = false;
@@ -114,6 +115,11 @@ void EditDistance::setOperationText(char match, char sub, char ins, char del)
     this->deleteText = del;
 }
 
+void EditDistance::setBufferText(char buffer)
+{
+    this->bufferText = buffer;
+}
+
 void EditDistance::setTraceback(int row, int column, bool b)
 {
     if(this->valid(row, column)) this->inTraceback[row][column] = b;
@@ -132,6 +138,7 @@ void EditDistance::resetTraceback()
             this->inTraceback[i][j] = false;
 
     this->pConversion.clear();
+    this->pSubsequence.clear();
     this->pSource.clear();
     this->pTarget.clear();
 }
@@ -143,6 +150,7 @@ void EditDistance::retrace(int row, int column)
     row = 0;
     column = 0;
     this->pConversion.clear();
+    this->pSubsequence.clear();
     this->pSource.clear();
     this->pTarget.clear();
 
@@ -151,15 +159,20 @@ void EditDistance::retrace(int row, int column)
             if(this->getTraceback(row+1, column)) {
                 this->pConversion.push_back(this->deleteText);
                 this->pSource.push_back(this->getSource().at(row));
-                this->pTarget.push_back('-');
+                this->pTarget.push_back(this->bufferText);
                 row += 1;
             } else if(this->getTraceback(row, column+1)) {
                 this->pConversion.push_back(this->insertText);
-                this->pSource.push_back('-');
+                this->pSource.push_back(this->bufferText);
                 this->pTarget.push_back(this->getTarget().at(column));
                 column += 1;
             } else if(this->getTraceback(row+1, column+1)) {
-                this->getCost(row, column) + this->matchCost == this->getCost(row+1, column+1) ? this->pConversion.push_back(this->matchText) : this->pConversion.push_back(this->replaceText);
+                if(this->getCost(row, column) + this->matchCost == this->getCost(row+1, column+1)) {
+                    this->pConversion.push_back(this->matchText);
+                    this->pSubsequence.push_back(this->getSource().at(row));
+                } else {
+                    this->pConversion.push_back(this->replaceText);
+                }
                 this->pSource.push_back(this->getSource().at(row));
                 this->pTarget.push_back(this->getTarget().at(column));
                 row += 1;
@@ -168,6 +181,7 @@ void EditDistance::retrace(int row, int column)
                 this->pConversion.clear();
                 this->pSource.clear();
                 this->pTarget.clear();
+                this->pSubsequence.clear();
                 break;
             }
         }
@@ -181,15 +195,19 @@ void EditDistance::traceback(int row, int column)
         int opt = this->optimal(this->getCost(row-1, column-1), this->getCost(row, column-1), this->getCost(row-1, column));
         if(this->getCost(row-1, column-1) == opt) {
             this->traceback(row-1, column-1);
-            if(this->getCost(row, column) == this->getCost(row-1, column-1) + this->matchCost) this->pConversion.push_back(this->matchText);
-            else this->pConversion.push_back(this->replaceText);
+            if(this->getCost(row, column) == this->getCost(row-1, column-1) + this->matchCost) {
+                this->pConversion.push_back(this->matchText);
+                this->pSubsequence.push_back(this->getSource().at(row-1));
+            } else {
+                this->pConversion.push_back(this->replaceText);
+            }
             this->pSource.push_back(this->getSource().at(row-1));
             this->pTarget.push_back(this->getTarget().at(column-1));
         }
         else if(this->getCost(row, column-1) == opt) {
             this->traceback(row, column-1);
             this->pConversion.push_back(this->insertText);
-            this->pSource.push_back('-');
+            this->pSource.push_back(this->bufferText);
             this->pTarget.push_back(this->getTarget().at(column-1));
         }
 
@@ -197,7 +215,7 @@ void EditDistance::traceback(int row, int column)
             this->traceback(row-1, column);
             this->pConversion.push_back(this->deleteText);
             this->pSource.push_back(this->getSource().at(row-1));
-            this->pTarget.push_back('-');
+            this->pTarget.push_back(this->bufferText);
         }
     }
     this->setTraceback(row, column, true);
@@ -237,11 +255,15 @@ int EditDistance::optimal(int a, int b, int c)
 void EditDistance::setOptimalMin()
 {
     this->maxOptimal = false;
+    this->invalidCost = this->source.length() + this->target.length() + 1;
+    this->bufferText = DEFAULT_BUFFER_TEXT;
 }
 
 void EditDistance::setOptimalMax()
 {
     this->maxOptimal = true;
+    this->invalidCost = -1;
+    this->bufferText = '.';
 }
 
 bool EditDistance::same(char a, char b)
@@ -268,4 +290,14 @@ std::string EditDistance::pseudoSource()
 std::string EditDistance::pseudoTarget()
 {
     return this->pTarget;
+}
+
+std::string EditDistance::pseudoSubsequence()
+{
+    return this->pSubsequence;
+}
+
+bool EditDistance::descriptiveSequence()
+{
+    return this->maxOptimal;
 }

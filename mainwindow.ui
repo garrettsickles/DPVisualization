@@ -139,6 +139,11 @@
       <string>Longest Common Subsequence</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>Maximum Monotone Subsequence</string>
+     </property>
+    </item>
    </widget>
    <widget class="QPushButton" name="transposeButton">
     <property name="geometry">

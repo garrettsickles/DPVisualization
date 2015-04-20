@@ -5,12 +5,12 @@
 #include <QWidget>
 #include <QMainWindow>
 #include "editdistance.h"
-#include "commonsubsequence.h"
 #include "displaygrid.h"
 #include "dpdisplay.h"
 
 #define INIT_SOURCE "Elephant"
 #define INIT_TARGET "Anaconda"
+#define MMS "0123456789"
 
 namespace Ui
 {

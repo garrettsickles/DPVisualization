@@ -15,13 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     editdistance.cpp \
-    commonsubsequence.cpp \
     displaygrid.cpp \
     dpdisplay.cpp
 
 HEADERS  += mainwindow.h \
     editdistance.h \
-    commonsubsequence.h \
     displaygrid.h \
     dpdisplay.h
 

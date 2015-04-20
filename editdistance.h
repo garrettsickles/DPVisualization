@@ -15,6 +15,7 @@ const char DEFAULT_MATCH_TEXT = 'm';
 const char DEFAULT_DELETE_TEXT = 'd';
 const char DEFAULT_INSERT_TEXT = 'i';
 const char DEFAULT_REPLACE_TEXT = 's';
+const char DEFAULT_BUFFER_TEXT = '-';
 
 class EditDistance
 {
@@ -39,8 +40,10 @@ public:
     int getMaxCost();
     void setOperationCosts(int match, int sub, int ins, int del);
     void setOperationText(char match, char sub, char ins, char del);
+    void setBufferText(char buffer);
     int getInvalidCost();
     int getCost(int, int);
+    bool descriptiveSequence();
     bool getTraceback(int, int);
     void setCost(int, int, int);
     void setTraceback(int, int, bool);
@@ -51,6 +54,7 @@ public:
     std::string pseudoConversion();
     std::string pseudoSource();
     std::string pseudoTarget();
+    std::string pseudoSubsequence();
 
 protected:
     bool valid(int, int);
@@ -59,11 +63,13 @@ protected:
     std::string pConversion;
     std::string pTarget;
     std::string pSource;
+    std::string pSubsequence;
 
     char matchText;
     char insertText;
     char deleteText;
     char replaceText;
+    char bufferText;
 
     int matchCost;
     int deleteCost;

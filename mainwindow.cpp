@@ -31,23 +31,39 @@ void MainWindow::initialize()
 
 void MainWindow::update()
 {
-
-    this->source = ui->sourceInput->text();
-    this->target = ui->targetInput->text();
-
     if(dm != NULL) delete dm;
     if(ui->algorithmType->currentIndex() == 0) {
+        this->reset();
+        this->source = ui->sourceInput->text();
+        this->target = ui->targetInput->text();
         dm = new DPDisplay(new EditDistance(this->source.toStdString(), this->target.toStdString()), this);
         dm->getCellText()->setOptimalMin();
         dm->getCellText()->setOperationCosts(0, 1, 1, 1);
         dm->getCellText()->setOperationText('m', 's', 'i', 'd');
         dm->getCellText()->initialize();
+        this->dm->updateDisplay();
+        this->dm->repaint();
     }
     else if(ui->algorithmType->currentIndex() == 1) {
+        this->reset();
+        this->source = ui->sourceInput->text();
+        this->target = ui->targetInput->text();
         dm = new DPDisplay(new EditDistance(this->source.toStdString(), this->target.toStdString()), this);
         dm->getCellText()->setOptimalMax();
         dm->getCellText()->setOperationCosts(1, 0, 0, 0);
-        dm->getCellText()->setOperationText('-', 'm', '-', '-');
+        dm->getCellText()->setOperationText('m', '-', '-', '-');
+        dm->getCellText()->initialize();
+        this->dm->updateDisplay();
+        this->dm->repaint();
+    }
+    else if(ui->algorithmType->currentIndex() == 2) {
+        this->reset();
+        this->source = ui->sourceInput->text();
+        this->target = ui->targetInput->text();
+        dm = new DPDisplay(new EditDistance(this->source.toStdString(), this->target.toStdString()), this);
+        dm->getCellText()->setOptimalMax();
+        dm->getCellText()->setOperationCosts(1, 0, 0, 0);
+        dm->getCellText()->setOperationText('m', '-', '-', '-');
         dm->getCellText()->initialize();
         this->dm->updateDisplay();
         this->dm->repaint();
@@ -85,9 +101,15 @@ void MainWindow::transpose()
 
 void MainWindow::reset()
 {
-    ui->targetInput->setText(INIT_SOURCE);
-    ui->sourceInput->setText(INIT_TARGET);
-    this->update();
+    if(this->ui->algorithmType->currentIndex() == 1 || this->ui->algorithmType->currentIndex() == 0) {
+        ui->targetInput->setEnabled(true);
+        ui->targetInput->setText(INIT_SOURCE);
+        ui->sourceInput->setText(INIT_TARGET);
+    } else if(this->ui->algorithmType->currentIndex() == 2) {
+        ui->sourceInput->setText("4259");
+        ui->targetInput->setText(MMS);
+        ui->targetInput->setEnabled(false);
+    }
 }
 
 void MainWindow::zoom()
