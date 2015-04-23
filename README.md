@@ -13,7 +13,7 @@ This project is written in **C++** using QT 5.0.4 and was compiled  and MinGW (W
 ## Organization
 This project is organized into multiple independent levels of software. The first level contains the implementation of the dynamic programming problems which are not dependent on QT 5.0.4. Each of these problems can be adapted into a second level composed of a *DPMatrix* which is a child of the generic *DisplayGrid*, specialized to work with dynamic programming problems and Qt visualization. Finally, the UI is at the top level and contains an instance of a *DPDisplay* which it uses to display the dynamic programming problem in question.
 
-# Usage
+# GUI Description and Usage
 The default GUI is as apears below:
 
 ![Default](screenshots/Default.PNG)
