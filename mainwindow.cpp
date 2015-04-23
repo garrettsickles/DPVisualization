@@ -106,7 +106,6 @@ void MainWindow::reset()
         ui->transposeButton->setEnabled(true);
         ui->caseCheckBox->setEnabled(true);
     } else if(this->ui->algorithmType->currentIndex() == 2) {
-        ui->sourceInput->setText("4259");
         ui->targetInput->setText(MMS);
         ui->targetInput->setEnabled(false);
         ui->transposeButton->setEnabled(false);
