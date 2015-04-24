@@ -34,3 +34,4 @@ A description of the following user option is as follows:
 
 **Other**
 * **Algorithm Combobox:** Declares which dynamic programming problem the grid should display to the user. If the value is changed, the grid will reset all values to their null state.
+* **Zoom Slider:** On the right hand side of the window outside of the grid display there is a slider that controls the size of each cell within the grid. This slider could be considered a zoom slider. 
